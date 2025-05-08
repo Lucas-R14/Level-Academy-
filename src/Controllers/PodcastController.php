@@ -1,5 +1,5 @@
 <?php
-class Podcast {
+class PodcastController {
     private $pdo;
     
     public function __construct($pdo) {

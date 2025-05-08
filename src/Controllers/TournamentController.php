@@ -1,5 +1,5 @@
 <?php
-class Tournament {
+class TournamentController {
     private $pdo;
     
     public function __construct($pdo) {
@@ -10,16 +10,16 @@ class Tournament {
     public function create($data) {
         try {
             $stmt = $this->pdo->prepare("
-                INSERT INTO tournaments (title, description, event_date, location, prize, entry_fee, registration_link)
-                VALUES (:title, :description, :event_date, :location, :prize, :entry_fee, :registration_link)
+                INSERT INTO tournaments (title, Format, event_date, location, prize, entry_fee, registration_link)
+                VALUES (:title, :format, :event_date, :location, :prize, :entry_fee, :registration_link)
             ");
             
             $stmt->execute([
                 ':title' => htmlspecialchars($data['title']),
-                ':description' => htmlspecialchars($data['description']),
+                ':format' => htmlspecialchars($data['format']),
                 ':event_date' => $data['event_date'],
                 ':location' => htmlspecialchars($data['location']),
-                ':prize' => htmlspecialchars($data['prize']),
+                ':prize' => $data['prize'],
                 ':entry_fee' => $data['entry_fee'],
                 ':registration_link' => htmlspecialchars($data['registration_link'])
             ]);
@@ -58,7 +58,7 @@ class Tournament {
             $stmt = $this->pdo->prepare("
                 UPDATE tournaments 
                 SET title = :title, 
-                    description = :description, 
+                    Format = :format, 
                     event_date = :event_date, 
                     location = :location, 
                     prize = :prize, 
@@ -70,10 +70,10 @@ class Tournament {
             $stmt->execute([
                 ':id' => $id,
                 ':title' => htmlspecialchars($data['title']),
-                ':description' => htmlspecialchars($data['description']),
+                ':format' => htmlspecialchars($data['format']),
                 ':event_date' => $data['event_date'],
                 ':location' => htmlspecialchars($data['location']),
-                ':prize' => htmlspecialchars($data['prize']),
+                ':prize' => $data['prize'],
                 ':entry_fee' => $data['entry_fee'],
                 ':registration_link' => htmlspecialchars($data['registration_link'])
             ]);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 07, 2025 at 11:14 AM
+-- Generation Time: May 08, 2025 at 07:33 AM
 -- Server version: 8.0.42
 -- PHP Version: 8.2.28
 
@@ -33,7 +33,7 @@ CREATE TABLE `articles` (
   `content` text COLLATE utf8mb4_general_ci NOT NULL,
   `author` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `Category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL
+  `Category` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -41,19 +41,29 @@ CREATE TABLE `articles` (
 --
 
 INSERT INTO `articles` (`id`, `title`, `content`, `author`, `created_at`, `Category`) VALUES
-(5, 'something', 'IDK', 'teste', '2025-05-06 10:57:14', ''),
-(6, 'dawdaddadawdadad', 'awdadawdadadadawdadddddddddddddddddd', 'awdawddddddddddddddddddddddddd', '2025-05-06 21:37:31', '');
+(5, 'something', 'IDK', 'teste', '2025-05-06 10:57:14', 1),
+(6, 'dawdaddadawdadad', 'content<br >', 'awdawddddddddddddddddddddddddd', '2025-05-06 21:37:31', 1),
+(7, 'iuawdukhawduhoauhwd', 'awdawdawdawdawd', 'awdawdawdawd', '2025-05-07 11:32:17', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Table structure for table `categories`
 --
 
-CREATE TABLE `category` (
-  `Id` int NOT NULL,
-  `Name` varchar(30) COLLATE utf8mb4_general_ci NOT NULL
+CREATE TABLE `categories` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Uncategorized', '2025-05-08 07:26:02', '2025-05-08 07:32:00');
 
 -- --------------------------------------------------------
 
@@ -118,13 +128,14 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`
 -- Indexes for table `articles`
 --
 ALTER TABLE `articles`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category` (`Category`);
 
 --
--- Indexes for table `category`
+-- Indexes for table `categories`
 --
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`Id`);
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `podcasts`
@@ -156,13 +167,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `category`
+-- AUTO_INCREMENT for table `categories`
 --
-ALTER TABLE `category`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `categories`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `podcasts`
@@ -181,6 +192,16 @@ ALTER TABLE `tournaments`
 --
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `articles`
+--
+ALTER TABLE `articles`
+  ADD CONSTRAINT `category` FOREIGN KEY (`Category`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

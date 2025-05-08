@@ -1,47 +1,46 @@
 <?php
 session_start();
-require_once '../config/database.php';
-require_once '../includes/Article.php';
+require_once '../config/config.php';
+require_once '../Controllers/ArticleController.php';
 
-// Check if admin is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+// Check if user is logged in
+if (!isLoggedIn() || !isAdmin()) {
+    redirect('../login.php');
     exit;
 }
 
-// Initialize Article class
-$article = new Article($pdo);
+// Initialize ArticleController
+$articleController = new ArticleController(getPDO());
 
 // Get article ID from URL
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$id) {
-    header('Location: dashboard.php');
+    redirect('dashboard.php');
     exit;
 }
 
 // Get article data
-$articleData = $article->get($id);
+$articleData = $articleController->get($id);
 if (!$articleData) {
-    header('Location: dashboard.php');
+    redirect('dashboard.php');
     exit;
 }
+
+// Get all categories
+$categories = $articleController->getCategories();
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Sanitize inputs
-        $data = [
-            'title' => filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING),
-            'content' => filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING),
-            'author' => filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING)
-        ];
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+        $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
+        $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
 
         // Update article
-        $article->update($id, $data);
-        
-        // Redirect to dashboard with success message
-        header('Location: dashboard.php?success=Article updated successfully!');
-        exit;
+        $articleController->update($id, $title, $content, $author, $category);
+        redirect('dashboard.php?success=Article updated successfully!');
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
@@ -127,8 +126,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="author">Author</label>
+                <label for="author">Author:</label>
                 <input type="text" id="author" name="author" value="<?php echo htmlspecialchars($articleData['author']); ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">Select a category</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo htmlspecialchars($category['name']); ?>"
+                            <?php echo $articleData['Category'] === $category['name'] ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($category['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
 
             <div class="form-group">

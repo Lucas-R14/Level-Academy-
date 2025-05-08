@@ -1,19 +1,26 @@
 <?php
-require_once 'includes/header.php';
-require_once dirname(__FILE__) . '/../includes/Article.php';
+// Session and security check
+session_start();
+require_once '../config/config.php';
 
-// Initialize Article class
-$article = new Article($pdo);
+// Check if user is logged in and is admin
+if (!isLoggedIn() || !isAdmin()) {
+    redirect('../login.php');
+    exit;
+}
+
+// Initialize ArticleController
+require_once dirname(__FILE__) . '/../Controllers/ArticleController.php';
+$articleController = new ArticleController(getPDO());
 
 // Handle article creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Sanitize inputs
-        $data = [
-            'title' => filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING),
-            'content' => filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING),
-            'author' => filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING)
-        ];
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+        $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
+        $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
 
         // Handle file upload
         if (!empty($_FILES['featured_image']['name'])) {
@@ -31,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Create new article
-        $article->create($data);
-        header('Location: articles.php');
+        $articleController->create($title, $content, $author, $category);
+        redirect('articles.php?success=Article created successfully!');
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
@@ -40,7 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Get all articles
-$articles = $article->getAll();
+$articles = $articleController->getAll();
+
+// Get categories for dropdown
+$categories = $articleController->getCategories();
+
+// Include header after all PHP processing
+require_once 'includes/header.php';
 ?>
 
 <div class="content-header">
@@ -91,6 +104,18 @@ $articles = $article->getAll();
             </div>
 
             <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="">Select a category</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo htmlspecialchars($category['name']); ?>">
+                            <?php echo htmlspecialchars($category['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="featured_image">Featured Image</label>
                 <input type="file" id="featured_image" name="featured_image" accept="image/*">
             </div>
@@ -106,4 +131,3 @@ $articles = $article->getAll();
     </div>
 </div>
 
-<?php require_once dirname(__FILE__) . '/includes/footer.php'; ?>

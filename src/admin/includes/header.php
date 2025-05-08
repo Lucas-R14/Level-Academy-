@@ -1,20 +1,4 @@
 <?php
-// Only start session if it's not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-require_once '../config/database.php';
-require_once dirname(__FILE__) . '/../../includes/User.php';
-
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
-    exit;
-}
-
-// Initialize User class
-$user = new User($pdo);
-
 // Get current page name
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
@@ -222,33 +206,40 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="sidebar-header">
             <h1>Admin Panel</h1>
         </div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="dashboard.php" class="<?php echo $current_page === 'dashboard.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-home"></i> Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="articles.php" class="<?php echo $current_page === 'articles.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-newspaper"></i> Articles
-                </a>
-            </li>
-            <li>
-                <a href="tournaments.php" class="<?php echo $current_page === 'tournaments.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-trophy"></i> Tournaments
-                </a>
-            </li>
-            <li>
-                <a href="podcasts.php" class="<?php echo $current_page === 'podcasts.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-podcast"></i> Podcasts
-                </a>
-            </li>
-            <li>
-                <a href="users.php" class="<?php echo $current_page === 'users.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-users"></i> Users
-                </a>
-            </li>
-        </ul>
+        <div class="sidebar-content">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="dashboard.php" class="<?php echo $current_page === 'dashboard.php' ? 'active' : ''; ?>">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="articles.php" class="<?php echo $current_page === 'articles.php' ? 'active' : ''; ?>">
+                        <i class="fas fa-newspaper"></i> Articles
+                    </a>
+                </li>
+                <li>
+                    <a href="categories.php" class="<?php echo $current_page === 'categories.php' ? 'active' : ''; ?>">
+                        <i class="fas fa-list"></i> Categories
+                    </a>
+                </li>
+                <li>
+                    <a href="tournaments.php" class="<?php echo $current_page === 'tournaments.php' ? 'active' : ''; ?>">
+                        <i class="fas fa-trophy"></i> Tournaments
+                    </a>
+                </li>
+                <li>
+                    <a href="podcasts.php" class="<?php echo $current_page === 'podcasts.php' ? 'active' : ''; ?>">
+                        <i class="fas fa-podcast"></i> Podcasts
+                    </a>
+                </li>
+                <li>
+                    <a href="users.php" class="<?php echo $current_page === 'users.php' ? 'active' : ''; ?>">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="main-content">

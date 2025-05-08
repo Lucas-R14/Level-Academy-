@@ -1,31 +1,34 @@
 <?php
 require_once '../config/config.php';
 
-class Article {
+class ArticleController {
     private $pdo;
     
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
     
-    // Create new article
-    public function create($data) {
+    // Get all categories
+    public function getCategories() {
         try {
-            $result = executeQuery(
-                "INSERT INTO articles (title, content, author)
-                VALUES (?, ?, ?)",
-                [
-                    htmlspecialchars($data['title']),
-                    nl2br(htmlspecialchars($data['content'])),
-                    htmlspecialchars($data['author'])
-                ]
-            );
-            
+            $result = executeQuery("SELECT Id as id, Name as name FROM category ORDER BY Name");
             if ($result['success']) {
-                return $result['last_insert_id'];
+                return $result['results'];
             }
             throw new Exception($result['error']);
         } catch (Exception $e) {
+            error_log("Error in getCategories: " . $e->getMessage());
+            return [];
+        }
+    }
+    
+    // Create new article
+    public function create($title, $content, $author, $category) {
+        try {
+            $stmt = $this->pdo->prepare("INSERT INTO articles (title, content, author, Category) VALUES (?, ?, ?, ?)");
+            $stmt->execute([htmlspecialchars($title), nl2br(htmlspecialchars($content)), htmlspecialchars($author), htmlspecialchars($category)]);
+            return $this->pdo->lastInsertId();
+        } catch (PDOException $e) {
             throw new Exception("Error creating article: " . $e->getMessage());
         }
     }
@@ -42,7 +45,7 @@ class Article {
             throw new Exception("Error fetching articles: " . $e->getMessage());
         }
     }
-
+    
     // Get all articles (for public)
     public function getAllPublished() {
         try {
@@ -55,7 +58,7 @@ class Article {
             throw new Exception("Error fetching articles: " . $e->getMessage());
         }
     }
-
+    
     // Get total number of articles
     public function getTotalArticles() {
         try {

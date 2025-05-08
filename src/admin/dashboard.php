@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once 'includes/header.php';
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -8,21 +7,23 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Include class files
-require_once dirname(__FILE__) . '/../includes/Article.php';
-require_once dirname(__FILE__) . '/../includes/Tournament.php';
-require_once dirname(__FILE__) . '/../includes/Podcast.php';
+// Include class filesphp
+require_once __DIR__ . '/../Controllers/ArticleController.php';
+require_once __DIR__ . '/../Controllers/TournamentController.php';
+require_once __DIR__ . '/../Controllers/PodcastController.php';
 
 // Initialize classes after header.php which contains $pdo
-$article = new Article($pdo);
-$podcast = new Podcast($pdo);
-$tournament = new Tournament($pdo);
+$articleController = new ArticleController(getPDO());
+$podcastController = new PodcastController(getPDO());
+$tournamentController = new TournamentController(getPDO());
 
 // Get statistics
-$articleCount = $article->getTotalArticles();
-$podcastCount = $podcast->getTotalPodcasts();
-$tournamentCount = $tournament->getTotalTournaments();
+$articleCount = $articleController->getTotalArticles();
+$podcastCount = $podcastController->getTotalPodcasts();
+$tournamentCount = $tournamentController->getTotalTournaments();
 ?>
+
+<?php require_once 'includes/header.php'; ?>
 
 <div class="content-header">
     <h2>Dashboard</h2>
@@ -57,7 +58,7 @@ $tournamentCount = $tournament->getTotalTournaments();
 
 <?php
 try {
-    $articles = $article->getAll();
+    $articles = $articleController->getAll();
     if ($articles) {
         echo '<h2 class="section-title">Recent Articles</h2>';
         echo '<div class="article-cards">';

@@ -1,4 +1,11 @@
 <?php
+// Initialize session first
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.gc_maxlifetime', 3600); // 1 hour in seconds
+    session_set_cookie_params(3600);
+    session_start();
+}
+
 // Load environment variables with fallback to default values
 $envPath = __DIR__ . '/../.Env';
 if (!file_exists($envPath)) {
@@ -48,31 +55,30 @@ if (!defined('BASE_URL')) {
 if (!defined('APP_NAME')) define('APP_NAME', 'Level Academy');
 if (!defined('APP_VERSION')) define('APP_VERSION', '1.0.0');
 
-// Session configuration
+// Session lifetime configuration (moved after session_start)
 if (!defined('SESSION_LIFETIME')) define('SESSION_LIFETIME', 3600); // 1 hour in seconds
 
-// Initialize session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
-    session_set_cookie_params(SESSION_LIFETIME);
-    session_start();
-}
-
-// Create database connection
+// Criar ligação à base de dados
 function getDatabaseConnection() {
     try {
-        // First create the database if it doesn't exist
-        $pdo = new PDO("mysql:host=" . DB_HOST, DB_USER, DB_PASS);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Primeiro criar a base de dados se não existir
+        $pdo = new PDO(
+            "mysql:host=" . DB_HOST, 
+            DB_USER, 
+            DB_PASS,
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        
+        // Definir atributos PDO
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         
-        // Create database
+        // Criar base de dados
         $pdo->exec("CREATE DATABASE IF NOT EXISTS " . DB_NAME);
         
-        // Switch to the database
+        // Mudar para a base de dados
         $pdo->exec("USE " . DB_NAME);
         
-        // Create tables
+        // Criar tabelas
         $pdo->exec("CREATE TABLE IF NOT EXISTS users (
             id INT PRIMARY KEY AUTO_INCREMENT,
             username VARCHAR(50) NOT NULL UNIQUE,
@@ -111,7 +117,7 @@ function getDatabaseConnection() {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
         
-        // Create admin user if it doesn't exist
+        // Criar utilizador admin se não existir
         $salt = '9974e364b11119f156fcf11488687199';
         $hashed_password = hash('sha256', $salt . 'admin');
         
@@ -122,29 +128,31 @@ function getDatabaseConnection() {
         
         return $pdo;
     } catch(PDOException $e) {
-        die("Database setup failed: " . $e->getMessage());
+        die("Falha na configuração da base de dados: " . $e->getMessage());
     }
 }
 
-// Secure query execution function
+// Função de execução segura de consultas
 function executeQuery($query, $params = []) {
     try {
         $pdo = getPDO();
         
-        // Sanitize input parameters
+        // Sanitizar parâmetros de entrada
         $sanitized_params = array_map(function($param) {
-            // Remove dangerous characters
-            $param = preg_replace('/[\\x00-\\x1F\\x7F\\x80-\\x9F]/', '', $param);
-            // Remove SQL injection patterns
-            $param = preg_replace('/--|;|#|\\/\\*|\\*|\\//', '', $param);
+            if (is_string($param)) {
+                // Remover caracteres perigosos
+                $param = preg_replace('/[\\x00-\\x1F\\x7F\\x80-\\x9F]/', '', $param);
+                // Remover padrões de injeção SQL
+                $param = preg_replace('/--|;|#|\\/\\*|\\*|\\//', '', $param);
+            }
             return $param;
         }, $params);
         
-        // Prepare and execute the query
+        // Preparar e executar a consulta
         $stmt = $pdo->prepare($query);
         $stmt->execute($sanitized_params);
         
-        // Return result based on query type
+        // Retornar resultado com base no tipo de consulta
         if (preg_match('/^(?:INSERT|UPDATE|DELETE)/i', $query)) {
             return [
                 'success' => true,
@@ -160,12 +168,12 @@ function executeQuery($query, $params = []) {
     } catch (PDOException $e) {
         return [
             'success' => false,
-            'error' => 'Database error: ' . $e->getMessage()
+            'error' => 'Erro de base de dados: ' . $e->getMessage()
         ];
     }
 }
 
-// Get PDO connection (singleton pattern)
+// Obter ligação PDO (padrão singleton)
 function getPDO() {
     static $pdo = null;
     if ($pdo === null) {
@@ -174,7 +182,7 @@ function getPDO() {
     return $pdo;
 }
 
-// Get current user data
+// Obter dados do utilizador atual
 function getCurrentUser() {
     if (isset($_SESSION['user_id'])) {
         $result = executeQuery(
@@ -188,34 +196,31 @@ function getCurrentUser() {
     return null;
 }
 
-// Check if user is logged in
+// Verificar se o utilizador está autenticado
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
-// Check if user is admin
+// Verificar se o utilizador é administrador
 function isAdmin() {
     $user = getCurrentUser();
     return $user && $user['role'] === 'admin';
 }
 
-// Redirect function
+// Função de redirecionamento
 function redirect($path) {
     $fullPath = preg_match('/^https?:\/\//', $path) ? $path : BASE_URL . ltrim($path, '/');
     header("Location: $fullPath");
     exit();
 }
 
-// Error handling
+// Tratamento de erros
 function handleError($error) {
     echo "<div class='error'>" . htmlspecialchars($error) . "</div>";
 }
 
-// Success message
+// Mensagem de sucesso
 function showSuccess($message) {
     echo "<div class='success'>" . htmlspecialchars($message) . "</div>";
 }
-
-// Session is already initialized at the top of the file
-// No need to call initSession() again
 ?>
