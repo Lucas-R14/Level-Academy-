@@ -3,9 +3,9 @@
 session_start();
 require_once '../config/config.php';
 
-// Check if user is logged in and is admin
-if (!isLoggedIn() || !isAdmin()) {
-    redirect('../login.php');
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
     exit;
 }
 
@@ -21,21 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
         $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
         $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
-
-        // Handle file upload
-        if (!empty($_FILES['featured_image']['name'])) {
-            $uploadDir = '../assets/images/articles/';
-            $fileName = uniqid() . '_' . $_FILES['featured_image']['name'];
-            $uploadPath = $uploadDir . $fileName;
-
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            if (move_uploaded_file($_FILES['featured_image']['tmp_name'], $uploadPath)) {
-                $data['featured_image'] = $fileName;
-            }
-        }
 
         // Create new article
         $articleController->create($title, $content, $author, $category);
@@ -113,11 +98,6 @@ require_once 'includes/header.php';
                         </option>
                     <?php endforeach; ?>
                 </select>
-            </div>
-
-            <div class="form-group">
-                <label for="featured_image">Featured Image</label>
-                <input type="file" id="featured_image" name="featured_image" accept="image/*">
             </div>
 
             <div class="form-group">

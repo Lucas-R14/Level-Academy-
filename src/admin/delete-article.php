@@ -1,16 +1,16 @@
 <?php
 session_start();
 require_once '../config/database.php';
-require_once '../includes/Article.php';
+require_once '../Controllers/ArticleController.php';
 
-// Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
 
-// Initialize Article class
-$article = new Article($pdo);
+// Initialize ArticleController
+$articleController = new ArticleController(getPDO());
 
 // Get article ID from URL
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -21,7 +21,7 @@ if (!$id) {
 
 try {
     // Delete article
-    $article->delete($id);
+    $articleController->delete($id);
     
     // Redirect to dashboard with success message
     header('Location: dashboard.php?success=Article deleted successfully!');

@@ -1,28 +1,52 @@
 <?php
 session_start();
 require_once '../config/config.php';
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once 'includes/header.php';
 require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
 
 // Initialize TournamentController
 $tournamentController = new TournamentController(getPDO());
 
+
 // Handle form submissions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
     try {
-        if (isset($_POST['title'], $_POST['format'], $_POST['event_date'], $_POST['location'], $_POST['prize'], $_POST['entry_fee'], $_POST['registration_link'])) {
-            $tournamentController->create([
-                'title' => filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING),
-                'format' => filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING),
-                'event_date' => filter_input(INPUT_POST, 'event_date', FILTER_SANITIZE_STRING),
-                'location' => filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING),
-                'prize' => filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_STRING),
-                'entry_fee' => filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-                'registration_link' => filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL)
-            ]);
-            header('Location: tournaments.php?success=Tournament created successfully!');
-            exit;
+        // Validate and sanitize input
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $format = filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING);
+        $event_date = filter_input(INPUT_POST, 'event_date', FILTER_SANITIZE_STRING);
+        $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
+        $prize = filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_STRING);
+        $entry_fee = filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $registration_link = filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL);
+
+        // Check if all required fields are filled
+        if (!$title || !$format || !$event_date || !$location || !$prize || !$entry_fee || !$registration_link) {
+            throw new Exception('Please fill in all required fields');
         }
+
+        // Create tournament
+        $tournamentController->create([
+            'title' => $title,
+            'format' => $format,
+            'event_date' => $event_date,
+            'location' => $location,
+            'prize' => $prize,
+            'entry_fee' => $entry_fee,
+            'registration_link' => $registration_link
+        ]);
+
+        // Redirect to tournaments page with success message
+        header('Location: tournaments.php');
+        exit;
+
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
@@ -44,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST">
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" required class="form-control">
+            <input type="text" id="title" name="title" required class="form-control" placeholder="Enter tournament title">
         </div>
         <div class="form-group">
             <label for="format">Format</label>
-            <input type="text" id="format" name="format" required class="form-control">
+            <input type="text" id="format" name="format" required class="form-control" placeholder="e.g., Solo, Team">
         </div>
         <div class="form-group">
             <label for="event_date">Event Date</label>
@@ -56,19 +80,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="form-group">
             <label for="location">Location</label>
-            <input type="text" id="location" name="location" required class="form-control">
+            <input type="text" id="location" name="location" required class="form-control" placeholder="Enter location">
         </div>
         <div class="form-group">
             <label for="prize">Prize</label>
-            <input type="text" id="prize" name="prize" required class="form-control">
+            <select id="prize" name="prize" required class="form-control">
+                <option value="0">No Prize</option>
+                <option value="1">Prize Available</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="entry_fee">Entry Fee</label>
-            <input type="number" id="entry_fee" name="entry_fee" step="0.01" required class="form-control">
+            <input type="number" id="entry_fee" name="entry_fee" step="0.01" required class="form-control" placeholder="0.00">
         </div>
         <div class="form-group">
             <label for="registration_link">Registration Link</label>
-            <input type="url" id="registration_link" name="registration_link" required class="form-control">
+            <input type="url" id="registration_link" name="registration_link" required class="form-control" placeholder="https://">
         </div>
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">Create Tournament</button>
@@ -129,6 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 .btn-secondary {
     background-color: #6c757d;
     color: white;
+}
+
+/* Add some spacing between form elements */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
 }
 </style>
 

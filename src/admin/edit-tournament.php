@@ -1,15 +1,23 @@
 <?php
 session_start();
 require_once '../config/config.php';
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+
 require_once 'includes/header.php';
 require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
 
 // Initialize TournamentController
 $tournamentController = new TournamentController(getPDO());
 
-// Check if ID is provided
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header('Location: tournaments.php?error=No tournament ID provided');
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
     exit;
 }
 
@@ -80,7 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="form-group">
             <label for="prize">Prize</label>
-            <input type="text" id="prize" name="prize" value="<?php echo htmlspecialchars($tournament['prize']); ?>" required class="form-control">
+            <select id="prize" name="prize" required class="form-control">
+                <option value="0" <?php echo $tournament['prize'] == 0 ? 'selected' : ''; ?>>No Prize</option>
+                <option value="1" <?php echo $tournament['prize'] == 1 ? 'selected' : ''; ?>>Prize Available</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="entry_fee">Entry Fee</label>

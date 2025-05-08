@@ -1,6 +1,13 @@
 <?php
 session_start();
 require_once '../config/config.php';
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once 'includes/header.php';
 require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
 
@@ -153,70 +160,4 @@ $tournaments = $tournamentController->getAll();
     font-size: 0.875rem;
 }
 </style>
-
-<?php
-// Close PHP tag at the end of the file
-?>
-            <h3><?php echo htmlspecialchars($tournament['title']); ?></h3>
-            <div class="article-meta">
-                <i class="fas fa-calendar"></i> <?php echo date('F j, Y', strtotime($tournament['event_date'])); ?>
-                <span style="margin: 0 10px;">•</span>
-                <i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($tournament['location']); ?>
-            </div>
-            <div class="article-details">
-                <p><i class="fas fa-trophy"></i> Prize: <?php echo htmlspecialchars($tournament['prize']); ?></p>
-                <p><i class="fas fa-money-bill"></i> Entry Fee: $<?php echo number_format($tournament['entry_fee'], 2); ?></p>
-            </div>
-            <div class="article-actions">
-                <a href="edit-tournament.php?id=<?php echo $tournament['id']; ?>" class="btn btn-primary">Edit</a>
-                <a href="delete-tournament.php?id=<?php echo $tournament['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this tournament?')">Delete</a>
-            </div>
-        </div>
-</div>
-
-<!-- Tournament Form Modal -->
-<div id="tournamentForm" style="display: none;">
-    <div class="card">
-        <h2>Create New Tournament</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="event_date">Event Date</label>
-                <input type="date" id="event_date" name="event_date" required>
-            </div>
-
-            <div class="form-group">
-                <label for="location">Location</label>
-                <input type="text" id="location" name="location" required>
-            </div>
-
-            <div class="form-group">
-                <label for="prize">Prize</label>
-                <input type="text" id="prize" name="prize" required>
-            </div>
-
-            <div class="form-group">
-                <label for="entry_fee">Entry Fee ($)</label>
-                <input type="number" id="entry_fee" name="entry_fee" step="0.01" required>
-            </div>
-
-            <div class="form-group">
-                <label for="registration_link">Registration Link</label>
-                <input type="url" id="registration_link" name="registration_link" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Create Tournament</button>
-            <button type="button" class="btn btn-danger" onclick="document.getElementById('tournamentForm').style.display = 'none'">Cancel</button>
-        </form>
-    </div>
-</div>
 

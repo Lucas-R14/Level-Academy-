@@ -3,11 +3,12 @@ session_start();
 require_once '../config/config.php';
 require_once '../Controllers/ArticleController.php';
 
-// Check if user is logged in
-if (!isLoggedIn() || !isAdmin()) {
-    redirect('../login.php');
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
     exit;
 }
+
 
 // Initialize ArticleController
 $articleController = new ArticleController(getPDO());
