@@ -56,6 +56,7 @@ require_once 'includes/header.php';
     <table class="table">
         <thead>
             <tr>
+                <th>Image</th>
                 <th>Title</th>
                 <th>Format</th>
                 <th>Event Date</th>
@@ -73,6 +74,13 @@ require_once 'includes/header.php';
             <?php else: ?>
                 <?php foreach ($tournaments as $tournament): ?>
                 <tr>
+                    <td>
+                        <?php if (!empty($tournament['image_path'])): ?>
+                            <img src="/Level-Academy-/public/<?php echo htmlspecialchars($tournament['image_path']); ?>" alt="<?php echo htmlspecialchars($tournament['title']); ?>" class="tournament-image" style="width: 50px; height: 50px; object-fit: cover;">
+                        <?php else: ?>
+                            <span class="no-image">No Image</span>
+                        <?php endif; ?>
+                    </td>
                     <td><?php echo htmlspecialchars($tournament['title']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['Format']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['event_date']); ?></td>

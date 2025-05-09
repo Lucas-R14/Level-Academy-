@@ -65,6 +65,7 @@ require_once 'includes/header.php';
                 <i class="fas fa-calendar"></i> <?php echo date('F j, Y', strtotime($article['created_at'])); ?>
             </div>
             <div class="article-actions">
+                <a href="view-article.php?id=<?php echo $article['id']; ?>" class="btn btn-info">View</a>
                 <a href="edit-article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Edit</a>
                 <a href="delete-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this article?')">Delete</a>
             </div>

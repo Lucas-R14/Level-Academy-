@@ -38,6 +38,30 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (isset($_POST['title'], $_POST['format'], $_POST['event_date'], $_POST['location'], $_POST['prize'], $_POST['entry_fee'], $_POST['registration_link'])) {
+            // Handle image upload
+            $image_path = $tournament['image_path']; // Keep existing image path
+            
+            if (isset($_FILES['tournament_image']) && $_FILES['tournament_image']['error'] === 0) {
+                $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+                $upload_dir = '../../public/images/Uploads/';
+                
+                $file_extension = strtolower(pathinfo($_FILES['tournament_image']['name'], PATHINFO_EXTENSION));
+                
+                if (!in_array($file_extension, $allowed_extensions)) {
+                    throw new Exception('Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.');
+                }
+
+                $image_name = uniqid() . '_' . time() . '.' . $file_extension;
+                $upload_path = $upload_dir . $image_name;
+
+                if (!move_uploaded_file($_FILES['tournament_image']['tmp_name'], $upload_path)) {
+                    throw new Exception('Failed to upload image.');
+                }
+
+                // Store relative path in database
+                $image_path = 'images/Uploads/' . $image_name;
+            }
+
             $tournamentController->update($tournamentId, [
                 'title' => filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING),
                 'format' => filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING),
@@ -45,7 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'location' => filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING),
                 'prize' => filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_STRING),
                 'entry_fee' => filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
-                'registration_link' => filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL)
+                'registration_link' => filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL),
+                'image_path' => $image_path
             ]);
             header('Location: tournaments.php?success=Tournament updated successfully!');
             exit;
@@ -71,7 +96,7 @@ require_once 'includes/header.php';
 <?php endif; ?>
 
 <div class="card">
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($tournament['title']); ?>" required class="form-control">
@@ -102,6 +127,21 @@ require_once 'includes/header.php';
         <div class="form-group">
             <label for="registration_link">Registration Link</label>
             <input type="url" id="registration_link" name="registration_link" value="<?php echo htmlspecialchars($tournament['registration_link']); ?>" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="tournament_image">Tournament Image</label>
+            <div class="image-upload-container">
+                <input type="file" id="tournament_image" name="tournament_image" class="form-control" accept="image/jpeg,image/png,image/gif">
+                <?php if (!empty($tournament['image_path'])): ?>
+                    <div class="current-image">
+                        <img src="/Level-Academy-/public/<?php echo htmlspecialchars($tournament['image_path']); ?>" alt="Current Image" style="max-width: 200px; max-height: 200px; object-fit: contain;">
+                        <p>Current Image</p>
+                    </div>
+                <?php endif; ?>
+                <div id="image-preview" class="image-preview">
+                    <img id="preview-img" src="" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;">
+                </div>
+            </div>
         </div>
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -149,6 +189,45 @@ require_once 'includes/header.php';
 
 .btn {
     padding: 8px 16px;
+
+.image-upload-container {
+    position: relative;
+}
+
+.image-preview {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.current-image {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.current-image img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+#preview-img {
+    width: auto;
+    height: auto;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+.btn {
+    padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -165,6 +244,24 @@ require_once 'includes/header.php';
 }
 </style>
 
+<script>
+    // Image preview functionality
+    document.getElementById('tournament_image').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewImg = document.getElementById('preview-img');
+                previewImg.src = e.target.result;
+                previewImg.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+</body>
+</html>
 <?php
 // Close PHP tag at the end of the file
 ?>

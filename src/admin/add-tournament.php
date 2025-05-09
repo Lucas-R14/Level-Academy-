@@ -15,6 +15,11 @@ if (!isset($_SESSION['user_id'])) {
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
     try {
+        // Ensure Uploads directory exists
+        $upload_dir = '../../public/images/Uploads/';
+        if (!file_exists($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
         // Validate and sanitize input
         $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
         $format = filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING);
@@ -23,6 +28,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $prize = filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_NUMBER_INT);
         $entry_fee = filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $registration_link = filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL);
+        
+        // Handle image upload
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+        $upload_dir = '../../public/images/Uploads/';
+        $image_path = '';
+
+        if (isset($_FILES['tournament_image']) && $_FILES['tournament_image']['error'] === 0) {
+            $file_extension = strtolower(pathinfo($_FILES['tournament_image']['name'], PATHINFO_EXTENSION));
+            
+            if (!in_array($file_extension, $allowed_extensions)) {
+                throw new Exception('Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.');
+            }
+
+            $image_name = uniqid() . '_' . time() . '.' . $file_extension;
+            $upload_path = $upload_dir . $image_name;
+
+            if (!move_uploaded_file($_FILES['tournament_image']['tmp_name'], $upload_path)) {
+                throw new Exception('Failed to upload image.');
+            }
+
+            // Store relative path in database
+            $image_path = 'images/Uploads/' . $image_name;
+        }
 
         // Check if all required fields are filled
         if (!$title || !$format || !$event_date || !$location || !$prize || !$entry_fee || !$registration_link) {
@@ -37,7 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'location' => $location,
             'prize' => $prize,
             'entry_fee' => $entry_fee,
-            'registration_link' => $registration_link
+            'registration_link' => $registration_link,
+            'image_path' => $image_path
         ]);
 
         // Redirect to tournaments page with success message
@@ -66,7 +95,7 @@ require_once 'includes/header.php';
 <?php endif; ?>
 
 <div class="card">
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" id="title" name="title" required class="form-control" placeholder="Enter tournament title">
@@ -97,6 +126,30 @@ require_once 'includes/header.php';
         <div class="form-group">
             <label for="registration_link">Registration Link</label>
             <input type="url" id="registration_link" name="registration_link" required class="form-control" placeholder="https://">
+        </div>
+        <div class="form-group">
+            <label for="tournament_image">Tournament Image</label>
+            <div class="image-upload-container">
+                <input type="file" id="tournament_image" name="tournament_image" class="form-control" accept="image/jpeg,image/png,image/gif">
+                <div id="image-preview" class="image-preview">
+                    <img id="preview-img" src="" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;">
+                </div>
+                <script>
+                    // Image preview functionality
+                    document.getElementById('tournament_image').addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const previewImg = document.getElementById('preview-img');
+                                previewImg.src = e.target.result;
+                                previewImg.style.display = 'block';
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                </script>
+            </div>
         </div>
         <div class="form-buttons">
             <button type="submit" class="btn btn-primary">Create Tournament</button>
@@ -152,6 +205,25 @@ require_once 'includes/header.php';
 .btn-primary {
     background-color: #007bff;
     color: white;
+}
+
+.image-upload-container {
+    position: relative;
+}
+
+.image-preview {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#preview-img {
+    width: auto;
+    height: auto;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
 }
 
 .btn-secondary {

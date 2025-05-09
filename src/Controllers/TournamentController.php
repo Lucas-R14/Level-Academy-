@@ -10,8 +10,8 @@ class TournamentController {
     public function create($data) {
         try {
             $stmt = $this->pdo->prepare("
-                INSERT INTO tournaments (title, Format, event_date, location, prize, entry_fee, registration_link)
-                VALUES (:title, :format, :event_date, :location, :prize, :entry_fee, :registration_link)
+                INSERT INTO tournaments (title, Format, event_date, location, prize, entry_fee, registration_link, image_path)
+                VALUES (:title, :format, :event_date, :location, :prize, :entry_fee, :registration_link, :image_path)
             ");
             
             $stmt->execute([
@@ -21,7 +21,8 @@ class TournamentController {
                 ':location' => htmlspecialchars($data['location']),
                 ':prize' => $data['prize'],
                 ':entry_fee' => $data['entry_fee'],
-                ':registration_link' => htmlspecialchars($data['registration_link'])
+                ':registration_link' => htmlspecialchars($data['registration_link']),
+                ':image_path' => $data['image_path'] ?? null
             ]);
             
             return $this->pdo->lastInsertId();
@@ -63,7 +64,8 @@ class TournamentController {
                     location = :location, 
                     prize = :prize, 
                     entry_fee = :entry_fee, 
-                    registration_link = :registration_link
+                    registration_link = :registration_link,
+                    image_path = :image_path
                 WHERE id = :id
             ");
             
@@ -75,7 +77,8 @@ class TournamentController {
                 ':location' => htmlspecialchars($data['location']),
                 ':prize' => $data['prize'],
                 ':entry_fee' => $data['entry_fee'],
-                ':registration_link' => htmlspecialchars($data['registration_link'])
+                ':registration_link' => htmlspecialchars($data['registration_link']),
+                ':image_path' => $data['image_path'] ?? null
             ]);
             
             return $stmt->rowCount();
