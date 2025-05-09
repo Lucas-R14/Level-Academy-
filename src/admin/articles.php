@@ -44,12 +44,12 @@ require_once 'includes/header.php';
 <div class="content-header">
     <h2>Articles Management</h2>
     <div class="actions">
-        <button class="btn btn-primary" onclick="document.getElementById('articleForm').style.display = 'block'">Create New Article</button>
+        <a href="add-article.php" class="btn btn-primary">Create New Article</a>
     </div>
 </div>
 
-<?php if (isset($error)): ?>
-    <div class="alert error"><?php echo $error; ?></div>
+<?php if (isset($_GET['success'])): ?>
+    <div class="alert success"><?php echo htmlspecialchars($_GET['success']); ?></div>
 <?php endif; ?>
 
 <div class="articles-grid">
@@ -72,42 +72,3 @@ require_once 'includes/header.php';
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
-
-<!-- Article Form Modal -->
-<div id="articleForm" style="display: none;">
-    <div class="card">
-        <h2>Create New Article</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-
-            <div class="form-group">
-                <label for="author">Author</label>
-                <input type="text" id="author" name="author" required>
-            </div>
-
-            <div class="form-group">
-                <label for="category">Category</label>
-                <select id="category" name="category" required>
-                    <option value="">Select a category</option>
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo htmlspecialchars($category['name']); ?>">
-                            <?php echo htmlspecialchars($category['name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="content">Content</label>
-                <textarea id="content" name="content" rows="10" required></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Create Article</button>
-            <button type="button" class="btn btn-danger" onclick="document.getElementById('articleForm').style.display = 'none'">Cancel</button>
-        </form>
-    </div>
-</div>
-

@@ -1,19 +1,16 @@
 <?php
 session_start();
 require_once '../config/config.php';
+require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
+
+// Initialize TournamentController
+$tournamentController = new TournamentController(getPDO());
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-
-require_once 'includes/header.php';
-require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
-
-// Initialize TournamentController
-$tournamentController = new TournamentController(getPDO());
-
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
@@ -23,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $format = filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING);
         $event_date = filter_input(INPUT_POST, 'event_date', FILTER_SANITIZE_STRING);
         $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
-        $prize = filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_STRING);
+        $prize = filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_NUMBER_INT);
         $entry_fee = filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $registration_link = filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL);
 
@@ -44,13 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         // Redirect to tournaments page with success message
-        header('Location: tournaments.php');
+        header('Location: tournaments.php?success=Tournament created successfully!');
         exit;
 
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
 }
+
+// Include header after form handling
+ob_start();
+require_once 'includes/header.php';
 ?>
 
 <div class="content-header">

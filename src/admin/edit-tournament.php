@@ -9,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 
-require_once 'includes/header.php';
 require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
 
 // Initialize TournamentController
@@ -25,7 +24,7 @@ $tournamentId = $_GET['id'];
 
 // Get tournament data
 try {
-    $tournament = $tournamentController->getById($tournamentId);
+    $tournament = $tournamentController->get($tournamentId);
     if (!$tournament) {
         header('Location: tournaments.php?error=Tournament not found');
         exit;
@@ -55,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = $e->getMessage();
     }
 }
+
+
+require_once 'includes/header.php';
 ?>
 
 <div class="content-header">

@@ -9,16 +9,16 @@ class PodcastController {
     // Create new podcast
     public function create($data) {
         try {
-            $stmt = $this->pdo->prepare("
-                INSERT INTO podcasts (title, description, youtube_link)
-                VALUES (:title, :description, :youtube_link)
-            ");
+            $stmt = $this->pdo->prepare(
+                "INSERT INTO podcasts (title, youtube_link)
+                VALUES (:title, :youtube_link)"
+            );
             
             $stmt->execute([
                 ':title' => htmlspecialchars($data['title']),
-                ':description' => htmlspecialchars($data['description']),
                 ':youtube_link' => htmlspecialchars($data['youtube_link'])
             ]);
+
             
             return $this->pdo->lastInsertId();
         } catch (PDOException $e) {
@@ -51,18 +51,16 @@ class PodcastController {
     // Update podcast
     public function update($id, $data) {
         try {
-            $stmt = $this->pdo->prepare("
-                UPDATE podcasts 
+            $stmt = $this->pdo->prepare(
+                "UPDATE podcasts 
                 SET title = :title, 
-                    description = :description, 
                     youtube_link = :youtube_link
-                WHERE id = :id
-            ");
+                WHERE id = :id"
+            );
             
             $stmt->execute([
                 ':id' => $id,
                 ':title' => htmlspecialchars($data['title']),
-                ':description' => htmlspecialchars($data['description']),
                 ':youtube_link' => htmlspecialchars($data['youtube_link'])
             ]);
             

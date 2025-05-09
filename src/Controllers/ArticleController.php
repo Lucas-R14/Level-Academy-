@@ -21,12 +21,46 @@ class ArticleController {
             return [];
         }
     }
+
+    // Verify if category exists
+    private function categoryExists($categoryId) {
+        try {
+            $result = executeQuery(
+                "SELECT * FROM categories
+                 WHERE Id = ?",
+                [(int)$categoryId]
+            );
+            $this->showAlert($categoryId);
+            $this->showAlert(!empty($result['results']));
+            if ($result['success'] && !empty($result['results'])) {
+                return true;
+            }
+            return false;
+        } catch (Exception $e) {
+            error_log("Error in categoryExists: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    function showAlert($message) {
+        echo "<script>alert('" . htmlspecialchars($message, ENT_QUOTES) . "');</script>";
+    }
     
     // Create new article
     public function create($title, $content, $author, $category) {
         try {
+            // Verify category exists
+            if (!$this->categoryExists($category)) {
+                throw new Exception("Invalid category ID");
+            }
+
             $stmt = $this->pdo->prepare("INSERT INTO articles (title, content, author, Category) VALUES (?, ?, ?, ?)");
-            $stmt->execute([htmlspecialchars($title), nl2br(htmlspecialchars($content)), htmlspecialchars($author), htmlspecialchars($category)]);
+            $stmt->execute([
+                htmlspecialchars($title),
+                nl2br(htmlspecialchars($content)),
+                htmlspecialchars($author),
+                (int)$category
+            ]);
             return $this->pdo->lastInsertId();
         } catch (PDOException $e) {
             throw new Exception("Error creating article: " . $e->getMessage());
@@ -109,18 +143,25 @@ class ArticleController {
     }
     
     // Update article
-    public function update($id, $data) {
+    public function update($id, $title, $content, $author, $category) {
         try {
+            // Verify category exists
+            if (!$this->categoryExists($category)) {
+                throw new Exception("Invalid category ID");
+            }
+
             $result = executeQuery(
                 "UPDATE articles 
                 SET title = ?, 
                     content = ?,
-                    author = ?
+                    author = ?,
+                    Category = ?
                 WHERE id = ?",
                 [
-                    htmlspecialchars($data['title']),
-                    nl2br(htmlspecialchars($data['content'])),
-                    htmlspecialchars($data['author']),
+                    htmlspecialchars($title),
+                    nl2br(htmlspecialchars($content)),
+                    htmlspecialchars($author),
+                    (int)$category,
                     $id
                 ]
             );

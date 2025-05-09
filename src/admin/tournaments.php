@@ -8,7 +8,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require_once 'includes/header.php';
 require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
 
 // Initialize TournamentController
@@ -29,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Get all tournaments
 $tournaments = $tournamentController->getAll();
+
+
+require_once 'includes/header.php';
 ?>
 
 <div class="content-header">

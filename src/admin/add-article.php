@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once '../config/config.php';
-require_once '../Controllers/ArticleController.php';
-require_once '../Controllers/CategoryController.php';
+
+
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -10,43 +10,52 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+require_once dirname(__FILE__) . '/../Controllers/ArticleController.php';
+require_once dirname(__FILE__) . '/../Controllers/CategoryController.php';
+
 // Initialize controllers
 $articleController = new ArticleController(getPDO());
 $categoryController = new CategoryController(getPDO());
 
-// Get article ID from URL
-$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-if (!$id) {
-    header('Location: articles.php');
-    exit;
-}
-
-// Get article data
-$articleData = $articleController->get($id);
-if (!$articleData) {
-    header('Location: articles.php');
-    exit;
-}
-
-// Get all categories
+// Get categories for dropdown
 $categories = $categoryController->getAll();
 
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
     try {
-        // Sanitize inputs
+        // Validate and sanitize input
         $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
-        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
         $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
         $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
 
-        // Update article
-        $articleController->update($id, $title, $content, $author, $category);
-        header('Location: articles.php?success=Article updated successfully!');
+        showAlert("$category");
+        
+        // Check if all required fields are filled
+        if (!$title || !$author || !$category || !$content) {
+            throw new Exception('Please fill in all required fields');
+        }
+
+        // Create article
+        $articleController->create(
+            $title,
+            $content,
+            $author,
+            $category
+        );
+
+        // Redirect to articles page with success message
+        header('Location: articles.php?success=Article created successfully!');
         exit;
+
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
+}
+
+
+function showAlert($message) {
+    echo "<script>alert('" . htmlspecialchars($message, ENT_QUOTES) . "');</script>";
 }
 
 // Include header after form handling
@@ -55,7 +64,7 @@ require_once 'includes/header.php';
 ?>
 
 <div class="content-header">
-    <h2>Edit Article</h2>
+    <h2>Add New Article</h2>
     <div class="actions">
         <a href="articles.php" class="btn btn-secondary">Back to Articles</a>
     </div>
@@ -69,12 +78,12 @@ require_once 'includes/header.php';
     <form method="POST">
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" required class="form-control" value="<?php echo htmlspecialchars($articleData['title']); ?>">
+            <input type="text" id="title" name="title" required class="form-control" placeholder="Enter article title">
         </div>
 
         <div class="form-group">
             <label for="author">Author</label>
-            <input type="text" id="author" name="author" required class="form-control" value="<?php echo htmlspecialchars($articleData['author']); ?>">
+            <input type="text" id="author" name="author" required class="form-control" placeholder="Enter author name">
         </div>
 
         <div class="form-group">
@@ -82,7 +91,7 @@ require_once 'includes/header.php';
             <select id="category" name="category" required class="form-control">
                 <?php foreach ($categories as $category): ?>
                     <option value="<?php echo htmlspecialchars($category['id']); ?>"
-                        selected="<?php echo $category['id'] == 1 ? 'selected' : ''; ?>">
+                        <?php echo $category['id'] == 1 ? 'selected' : ''; ?>>
                         <?php echo htmlspecialchars($category['name']); ?>
                     </option>
                 <?php endforeach; ?>
@@ -91,11 +100,11 @@ require_once 'includes/header.php';
 
         <div class="form-group">
             <label for="content">Content</label>
-            <textarea id="content" name="content" required class="form-control" rows="10"><?php echo htmlspecialchars($articleData['content']); ?></textarea>
+            <textarea id="content" name="content" required class="form-control" rows="10" placeholder="Enter article content"></textarea>
         </div>
 
         <div class="form-buttons">
-            <button type="submit" class="btn btn-primary">Update Article</button>
+            <button type="submit" class="btn btn-primary">Create Article</button>
             <a href="articles.php" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
@@ -161,3 +170,7 @@ require_once 'includes/header.php';
     margin-bottom: 5px;
 }
 </style>
+
+<?php
+// Close PHP tag at the end of the file
+?>

@@ -1,0 +1,143 @@
+<?php
+session_start();
+require_once '../config/config.php';
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+
+require_once dirname(__FILE__) . '/../Controllers/PodcastController.php';
+
+// Initialize PodcastController
+$podcastController = new PodcastController(getPDO());
+
+
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
+    try {
+        // Validate and sanitize input
+        $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
+        $youtube_link = filter_input(INPUT_POST, 'youtube_link', FILTER_SANITIZE_URL);
+
+        // Check if all required fields are filled
+        if (!$title || !$youtube_link) {
+            throw new Exception('Please fill in all required fields');
+        }
+
+        // Create podcast
+        $podcastController->create([
+            'title' => $title,
+            'youtube_link' => $youtube_link
+        ]);
+
+        // Redirect to podcasts page with success message
+        header('Location: podcasts.php?success=Podcast created successfully!');
+        exit;
+
+    } catch (Exception $e) {
+        $error = $e->getMessage();
+    }
+}
+
+// Include header after form handling
+ob_start();
+require_once 'includes/header.php';
+?>
+
+<div class="content-header">
+    <h2>Add New Podcast</h2>
+    <div class="actions">
+        <a href="podcasts.php" class="btn btn-secondary">Back to Podcasts</a>
+    </div>
+</div>
+
+<?php if (isset($error)): ?>
+    <div class="alert error"><?php echo htmlspecialchars($error); ?></div>
+<?php endif; ?>
+
+<div class="card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required class="form-control" placeholder="Enter podcast title">
+        </div>
+        
+        <div class="form-group">
+            <label for="youtube_link">YouTube Link</label>
+            <input type="url" id="youtube_link" name="youtube_link" required class="form-control" placeholder="https://www.youtube.com/...">
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary">Create Podcast</button>
+            <a href="podcasts.php" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Add some spacing between form elements */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+</style>
+
+<?php
+// Close PHP tag at the end of the file
+?>
