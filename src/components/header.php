@@ -20,11 +20,11 @@
           <div class="dropdown">
             <a href="#home" class="dropbtn">Home</a>
             <div class="dropdown-content">
-              <a href="#whatwedo">What We Do</a>
-              <a href="#offers">Offers</a>
+              <a href="#services">What We Do</a>
+              <a href="#courses">Offers</a>
               <a href="#news">News</a>
               <a href="#afkseries">AFK Series</a>
-              <a href="#facility">Facility</a>
+              <a href="#facility">Faculty</a>
               <a href="#contact">Contact</a>
             </div>
           </div>

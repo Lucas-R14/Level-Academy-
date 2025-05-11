@@ -91,9 +91,10 @@ include 'src/components/header.php';
     <div class="section-divider"></div>
   </section>
 
+  <!-- Stats -->
   <section id="stats" class="section stats">
     <div class="container">
-      <h2 class="section-title">Our First Year Statistics</h2>
+      <h2 class="section-title rgb-effect">Our First Year Statistics</h2>
       
       <div class="stats-container">
         <div class="stat fade-in">
@@ -136,6 +137,7 @@ include 'src/components/header.php';
     </div>
   </section>
 
+  <!-- News -->
   <section id="news" class="section">
     <div class="container">
       <h2 class="section-title">News</h2>
@@ -165,6 +167,39 @@ include 'src/components/header.php';
             <h3 class="news-title">Level Academy Announces GamingMalta Autumn Series</h3>
             <p>The local eSports organization Level Academy has just announced its competitive events calendar for the autumn months through its Facebook page.</p>
             <a href="#" class="btn" style="padding: 0.5rem 1rem; margin-top: 1rem; font-size: 0.8rem;">Read More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AFK Series Videos -->
+  <section id="afkseries" class="section">
+    <div class="container">
+      <h2 class="section-title rgb-effect">GOING AFK SERIES - LEVEL ACADEMY</h2>
+      
+      <div class="videos-container">
+        <div class="video-item fade-in">
+          <div class="video-wrapper">
+            <iframe width="100%" height="300" src="https://www.youtube.com/embed/PewDgSE_XM0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        
+        <div class="video-item fade-in">
+          <div class="video-wrapper">
+            <iframe width="100%" height="300" src="https://www.youtube.com/embed/DmkVtCk05sM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        
+        <div class="video-item fade-in">
+          <div class="video-wrapper">
+            <iframe width="100%" height="300" src="https://www.youtube.com/embed/uTaafZum59E" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        
+        <div class="video-item fade-in">
+          <div class="video-wrapper">
+            <iframe width="100%" height="300" src="https://www.youtube.com/embed/QD5ywvpLye0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
       </div>

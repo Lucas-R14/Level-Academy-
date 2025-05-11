@@ -1,6 +1,8 @@
 :root {
   --primary: #AF04E8;
   --secondary: #FB5304;
+  --tertiary: #04E8D4;
+  --quaternary: #04B2E8;
   --dark: #111111;
   --light: #ECEFF3;
   --gradient: linear-gradient(90deg, var(--primary), var(--secondary));
@@ -47,11 +49,13 @@ nav {
   font-weight: 800;
   font-size: 2rem;
   background: var(--gradient);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   text-transform: uppercase;
+  animation: gradient-shift 4s ease infinite;
 }
 
 .menu {
@@ -189,12 +193,21 @@ h1 {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   max-width: 600px;
+  overflow: hidden;
+  border-right: 2px solid var(--primary);
+  white-space: nowrap;
+  margin: 0 auto 2rem 0;
+  animation: 
+    typing 3.5s steps(40, end),
+    blink-caret .75s step-end infinite;
+  animation-fill-mode: forwards;
 }
 
 .btn {
   display: inline-block;
   padding: 1rem 2rem;
   background: var(--gradient);
+  background-size: 200% 100%;
   color: var(--light);
   text-decoration: none;
   font-weight: 700;
@@ -203,11 +216,20 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 1px;
   box-shadow: 0 5px 15px rgba(175, 4, 232, 0.4);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.btn::before {
+  display: none;
 }
 
 .btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(175, 4, 232, 0.6);
+  background-position: 100% 50%;
 }
 
 .stats {
@@ -255,6 +277,28 @@ h1 {
   bottom: -15px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.section-title.rgb-effect {
+  background: var(--gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradient-shift 4s ease infinite;
+  text-shadow: none;
+}
+
+.section-title.rgb-effect::after {
+  background: var(--gradient);
+  background-size: 200% 100%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.stats .section-title.rgb-effect {
+  font-size: 2.7rem;
+  letter-spacing: 1px;
 }
 
 .pillars {
@@ -318,6 +362,7 @@ h1 {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
+  animation: pulse-icon 2s infinite alternate;
 }
 
 .service-icon i {
@@ -395,6 +440,16 @@ h1 {
 .news-item:hover {
   transform: translateY(-10px);
   border-color: var(--primary);
+  box-shadow: 0 10px 25px rgba(175, 4, 232, 0.3);
+  background: rgba(255,255,255,0.07);
+}
+
+.news-item:hover::before {
+  display: none;
+}
+
+.news-content {
+  transition: none;
 }
 
 .news-date {
@@ -409,6 +464,7 @@ h1 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
   color: var(--primary);
+  text-shadow: none;
 }
 
 .news-content p {
@@ -588,6 +644,7 @@ footer {
   justify-content: center;
   margin: 0 auto 1.5rem;
   border: 2px solid var(--primary);
+  animation: pulse-icon 2s infinite alternate;
 }
 
 .tournament-icon i {
@@ -605,6 +662,7 @@ footer {
   justify-content: center;
   margin: 0 auto 2rem;
   border: 2px solid var(--primary);
+  animation: pulse-icon 2s infinite alternate;
 }
 
 .coming-soon-icon i {
@@ -658,5 +716,340 @@ footer {
   left: 0;
   right: 0;
   z-index: 1;
+}
+
+/* Estilos para a seção de vídeos AFK Series */
+.videos-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.video-item {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  border: 1px solid rgba(175, 4, 232, 0.2);
+  padding: 1rem;
+}
+
+.video-item:hover {
+  transform: translateY(-10px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 25px rgba(175, 4, 232, 0.3);
+}
+
+.video-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(175, 4, 232, 0.3);
+}
+
+.video-wrapper iframe {
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  height: 300px;
+}
+
+.video-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 40% 40%, rgba(175, 4, 232, 0.2) 0%, transparent 10%),
+    radial-gradient(circle at 60% 30%, rgba(251, 83, 4, 0.2) 0%, transparent 10%),
+    radial-gradient(circle at 30% 70%, rgba(4, 232, 212, 0.2) 0%, transparent 10%),
+    radial-gradient(circle at 70% 60%, rgba(4, 178, 232, 0.2) 0%, transparent 10%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.video-item:hover .video-wrapper::after {
+  opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .videos-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .video-item {
+    margin: 0 1rem 2rem 1rem;
+  }
+}
+
+/* Adicionando efeito RGB para títulos de seção especiais */
+.section-title.rgb-effect {
+  background: var(--gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.section-title.rgb-effect::after {
+  background: var(--gradient);
+  background-size: 200% 100%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* Adicionando efeito de borda RGB para cards em hover */
+.service:hover, .pillar:hover, .news-item:hover, .video-item:hover, .stat:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 25px rgba(175, 4, 232, 0.3);
+  transform: translateY(-10px);
+}
+
+/* Removendo efeito de borda RGB */
+.service:hover::before, .pillar:hover::before, .news-item:hover::before, .video-item:hover::before, .stat:hover::before {
+  display: none;
+}
+
+/* Animações */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse-icon {
+  0% {
+    box-shadow: 0 0 0 0 rgba(175, 4, 232, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(175, 4, 232, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(175, 4, 232, 0);
+  }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--primary) }
+}
+
+/* Estilos para canvas de partículas */
+.particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Efeito de ripple para botões */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+  width: 100px;
+  height: 100px;
+  transform-origin: center;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Efeito de brilho ao passar o mouse */
+.service:hover .service-icon,
+.video-item:hover .video-wrapper,
+.news-item:hover .news-title,
+.stat:hover .stat-number {
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px rgba(175, 4, 232, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(175, 4, 232, 0.8), 0 0 25px rgba(251, 83, 4, 0.6);
+  }
+}
+
+/* Efeito de texto iluminado */
+.section-title.rgb-effect {
+  text-shadow: 0 0 8px rgba(175, 4, 232, 0.5);
+}
+
+/* Efeito revelador para seções */
+.section {
+  position: relative;
+  overflow: hidden;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--gradient);
+  background-size: 200% 100%;
+  animation: gradient-shift 4s ease infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.section:hover::before {
+  opacity: 1;
+}
+
+/* Efeito de cursor personalizado nos cards */
+.service, .pillar, .news-item, .video-item, .stat {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2; /* Aumenta o z-index para ficar acima do canvas de partículas */
+  max-width: 800px;
+  padding: 0 2rem;
+}
+
+/* Efeito de destaque para ícones sociais */
+.social-links a {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.social-links a::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  background: var(--gradient);
+  background-size: 200% 100%;
+  opacity: 0;
+  transform: rotate(45deg);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.social-links a:hover::before {
+  opacity: 0.2;
+  top: -50%;
+  left: -50%;
+}
+
+.social-links a:hover {
+  transform: translateY(-5px);
+  color: #fff;
+  text-shadow: 0 0 10px rgba(175, 4, 232, 0.7);
+}
+
+/* Ajustes específicos para a seção de estatísticas */
+.stats .stat:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 25px rgba(175, 4, 232, 0.3);
+  transform: translateY(-10px);
+  background: rgba(255,255,255,0.05);
+}
+
+.stats .stat:hover::before {
+  display: none;
+}
+
+.stats .stat:hover .stat-number {
+  text-shadow: none;
+  color: var(--primary);
+}
+
+.stats .stat-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  text-shadow: none;
+}
+
+.stats .service-icon, 
+.stats .tournament-icon, 
+.stats .coming-soon-icon {
+  animation: none;
+}
+
+/* Remover efeito de brilho especificamente para estatísticas */
+.stat:hover .stat-number {
+  animation: none;
+}
+
+/* Ajustes específicos para a seção de notícias */
+.news-item:hover .news-title {
+  animation: none;
+  color: var(--primary);
+  text-shadow: none;
+}
+
+/* Remover efeito de brilho para títulos de notícias */
+.news-item:hover .news-content {
+  box-shadow: none;
+}
+
+/* Evitando qualquer animação indesejada nos elementos de notícias */
+#news .news-title,
+#news .news-content,
+#news .news-date {
+  animation: none !important;
+  text-shadow: none !important;
+  transition: transform 0.3s !important;
+}
+
+#news .btn {
+  animation: none !important;
+  text-shadow: none !important;
+  transition: transform 0.3s, box-shadow 0.3s !important;
+}
+
+#news .news-title {
+  color: var(--primary) !important;
+}
+
+/* Ajustes para o botão Read More nas notícias */
+#news .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(175, 4, 232, 0.6);
+  background-position: 100% 50%;
 }
 
