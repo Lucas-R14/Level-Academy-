@@ -168,14 +168,14 @@
             padding: 2rem 0 5rem 0;
             text-align: center;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
+        .buttons-container {
             display: flex;
             justify-content: center;
             gap: 3rem;
             flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
         .action-button {
             display: inline-block;
@@ -189,29 +189,11 @@
             transition: all 0.3s ease;
             min-width: 280px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-        .action-button:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: all 0.6s ease;
-            z-index: -1;
         }
         .action-button:hover {
             background: #e0e0e0;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-            color: #000;
-        }
-        .action-button:hover:before {
-            left: 100%;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         /* Contact Section */
@@ -273,7 +255,7 @@ include '../components/header.php';
 
 <!-- Buttons Section -->
 <div class="buttons-section">
-    <div class="container">
+    <div class="buttons-container">
         <a href="https://levelacademy.com.mt/wp-content/uploads/2025/02/InsideOut-2025-Brochure-1.pdf" target="_blank" class="action-button">Brochure</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLScmLD0PYxSiNooGa-GAfX0nql8zHrHoUwT_VeozdbJ-jHu-7Q/viewform" target="_blank" class="action-button">Register</a>
     </div>
