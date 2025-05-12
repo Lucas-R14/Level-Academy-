@@ -42,24 +42,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $image_path = $tournament['image_path']; // Keep existing image path
             
             if (isset($_FILES['tournament_image']) && $_FILES['tournament_image']['error'] === 0) {
+                $file = $_FILES['tournament_image'];
+                $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                 $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-                $upload_dir = '../../public/images/Uploads/';
-                
-                $file_extension = strtolower(pathinfo($_FILES['tournament_image']['name'], PATHINFO_EXTENSION));
-                
+
                 if (!in_array($file_extension, $allowed_extensions)) {
                     throw new Exception('Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.');
+                }
+
+                // Direct upload without curl
+                $upload_dir = "../../public/assets/images/uploads/tournaments/";
+                
+                // Create directory if it doesn't exist
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
                 }
 
                 $image_name = uniqid() . '_' . time() . '.' . $file_extension;
                 $upload_path = $upload_dir . $image_name;
 
-                if (!move_uploaded_file($_FILES['tournament_image']['tmp_name'], $upload_path)) {
+                if (move_uploaded_file($file['tmp_name'], $upload_path)) {
+                    $image_path = "assets/images/uploads/tournaments/" . $image_name;
+                } else {
                     throw new Exception('Failed to upload image.');
                 }
-
-                // Store relative path in database
-                $image_path = 'images/Uploads/' . $image_name;
             }
 
             $tournamentController->update($tournamentId, [
@@ -189,6 +195,10 @@ require_once 'includes/header.php';
 
 .btn {
     padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
 .image-upload-container {
     position: relative;
@@ -224,13 +234,6 @@ require_once 'includes/header.php';
     max-width: 200px;
     max-height: 200px;
     object-fit: contain;
-}
-
-.btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
 .btn-primary {
