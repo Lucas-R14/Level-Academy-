@@ -1,0 +1,121 @@
+.faculty-section {
+    padding: 8rem 0 5rem;
+    background-color: var(--dark);
+    min-height: 100vh;
+}
+
+.faculty-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: var(--light);
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    text-align: center;
+    position: relative;
+}
+
+.faculty-title::after {
+    content: '';
+    width: 80px;
+    height: 4px;
+    background: var(--gradient);
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.faculty-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.faculty-member {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 2rem;
+    width: 300px;
+    text-align: center;
+    border: 1px solid rgba(175, 4, 232, 0.2);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.faculty-member:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 25px rgba(175, 4, 232, 0.3);
+}
+
+.faculty-image {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary);
+    position: relative;
+}
+
+.faculty-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.faculty-name {
+    color: var(--light);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.faculty-role {
+    color: var(--primary);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Exo 2', sans-serif;
+}
+
+.linkedin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--gradient);
+    color: var(--light);
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.linkedin-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(175, 4, 232, 0.6);
+    background-position: 100% 50%;
+}
+
+@media screen and (max-width: 768px) {
+    .faculty-title {
+        font-size: 2rem;
+        padding: 0 1rem;
+    }
+
+    .faculty-container {
+        padding: 1rem;
+    }
+
+    .faculty-member {
+        width: 100%;
+        max-width: 300px;
+    }
+} 

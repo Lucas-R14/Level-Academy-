@@ -141,7 +141,7 @@ nav {
   height: 100vh;
   display: flex;
   align-items: center;
-  background-image: url('../images/home/home_image1.jpg');
+  background-image: url('../assets/images/home/home_image1.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
@@ -234,7 +234,7 @@ h1 {
 
 .stats {
   padding: 6rem 0;
-  background-image: url('../images/home/home_image2.jpg');
+  background-image: url('../assets/images/home/home_image2.jpg');
   background-size: cover;
   background-position: center;
   position: relative;

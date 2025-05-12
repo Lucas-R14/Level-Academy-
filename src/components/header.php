@@ -24,7 +24,7 @@
               <a href="#courses">Offers</a>
               <a href="#news">News</a>
               <a href="#afkseries">AFK Series</a>
-              <a href="#facility">Faculty</a>
+              <a href="./src/pages/faculty.php">Faculty</a>
               <a href="#contact">Contact</a>
             </div>
           </div>
