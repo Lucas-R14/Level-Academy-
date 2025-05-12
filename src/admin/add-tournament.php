@@ -13,13 +13,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // Handle form submissions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Ensure Uploads directory exists
-        $upload_dir = '../../public/images/Uploads/';
-        if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
         // Validate and sanitize input
         $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
         $format = filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING);
@@ -28,28 +23,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $prize = filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_NUMBER_INT);
         $entry_fee = filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $registration_link = filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL);
-        
-        // Handle image upload
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-        $upload_dir = '../../public/images/Uploads/';
-        $image_path = '';
+        $image_path = null;
 
+        // Handle image upload
         if (isset($_FILES['tournament_image']) && $_FILES['tournament_image']['error'] === 0) {
-            $file_extension = strtolower(pathinfo($_FILES['tournament_image']['name'], PATHINFO_EXTENSION));
-            
+            $file = $_FILES['tournament_image'];
+            $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
             if (!in_array($file_extension, $allowed_extensions)) {
                 throw new Exception('Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.');
+            }
+
+            // Method 1: Direct upload without curl
+            $upload_dir = "../../public/assets/images/uploads/tournaments/";
+            
+            // Create directory if it doesn't exist
+            if (!file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
             }
 
             $image_name = uniqid() . '_' . time() . '.' . $file_extension;
             $upload_path = $upload_dir . $image_name;
 
-            if (!move_uploaded_file($_FILES['tournament_image']['tmp_name'], $upload_path)) {
+            if (move_uploaded_file($file['tmp_name'], $upload_path)) {
+                $image_path = "assets/images/uploads/tournaments/" . $image_name;
+            } else {
                 throw new Exception('Failed to upload image.');
             }
-
-            // Store relative path in database
-            $image_path = 'images/Uploads/' . $image_name;
         }
 
         // Check if all required fields are filled
@@ -78,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+// Rest of the code remains unchanged
 // Include header after form handling
 ob_start();
 require_once 'includes/header.php';

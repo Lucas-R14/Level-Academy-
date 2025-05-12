@@ -46,7 +46,20 @@ require_once 'includes/header.php';
     </div>
 
     <div class="article-content">
-        <?php echo nl2br(htmlspecialchars($article['content'])); ?>
+        <?php 
+        // Decode HTML entities and maintain formatting
+        $content = $article['content'];
+        // Replace &lt; with < and &gt; with >
+        $content = str_replace(['&lt;', '&gt;'], ['<', '>'], $content);
+        // Replace &amp; with &
+        $content = str_replace('&amp;', '&', $content);
+        // Replace &nbsp; with actual space
+        $content = str_replace('&nbsp;', ' ', $content);
+        // Decode other HTML entities
+        $content = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
+        
+        echo $content;
+        ?>
     </div>
 
     <div class="article-actions">
@@ -79,6 +92,21 @@ require_once 'includes/header.php';
     color: #444;
     line-height: 1.8;
     margin-bottom: 30px;
+    word-wrap: break-word;
+}
+
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 15px 0;
+}
+
+.article-content b {
+    font-weight: bold;
+}
+
+.article-content i {
+    font-style: italic;
 }
 
 .article-content br {

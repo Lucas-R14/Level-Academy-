@@ -64,7 +64,7 @@ class CategoryController {
             $stmt = $this->pdo->prepare("DELETE FROM categories WHERE id = ?");
             return $stmt->execute([$id]);
         } catch (PDOException $e) {
-            throw new Exception($result['error']);
+            throw new Exception($e->getMessage());
         } catch (Exception $e) {
             throw new Exception("Error deleting category: " . $e->getMessage());
         }
