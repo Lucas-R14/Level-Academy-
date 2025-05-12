@@ -666,7 +666,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Send the request
-        xhr.open('POST', 'upload-image.php', true);
+        xhr.open('POST', '../controllers/upload-image.php', true);
         xhr.send(formData);
     }
     
@@ -682,7 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         // Fazer uma chamada AJAX para obter a lista de imagens com o parâmetro type=articles
-        fetch('get-images.php?type=articles')
+        fetch('../controllers/get-images.php?type=articles')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro ao obter a lista de imagens');
@@ -779,7 +779,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 imageItem.classList.add('remove-image-animation');
                 
                 // Remove from server - Corrigido para usar 'type' em vez de 'directory'
-                fetch('delete-image.php', {
+                fetch('../controllers/delete-image.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
