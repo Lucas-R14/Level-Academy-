@@ -15,11 +15,6 @@ if (!isset($_SESSION['user_id'])) {
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
     try {
-        // Ensure Uploads directory exists
-        $upload_dir = '../../public/images/Uploads/';
-        if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
         // Validate and sanitize input
         $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
         $format = filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING);
@@ -28,28 +23,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $prize = filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_NUMBER_INT);
         $entry_fee = filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $registration_link = filter_input(INPUT_POST, 'registration_link', FILTER_SANITIZE_URL);
+        $image_path = '';
         
         // Handle image upload
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-        $upload_dir = '../../public/images/Uploads/';
-        $image_path = '';
-
         if (isset($_FILES['tournament_image']) && $_FILES['tournament_image']['error'] === 0) {
-            $file_extension = strtolower(pathinfo($_FILES['tournament_image']['name'], PATHINFO_EXTENSION));
-            
+            $file = $_FILES['tournament_image'];
+            $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
             if (!in_array($file_extension, $allowed_extensions)) {
                 throw new Exception('Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.');
             }
 
-            $image_name = uniqid() . '_' . time() . '.' . $file_extension;
-            $upload_path = $upload_dir . $image_name;
-
-            if (!move_uploaded_file($_FILES['tournament_image']['tmp_name'], $upload_path)) {
-                throw new Exception('Failed to upload image.');
+            // Upload image using upload-image.php
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'upload-image.php');
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+                'image' => new CURLFile($file['tmp_name'], $file['type'], $file['name']),
+                'type' => 'tournaments'
+            ));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            
+            $response = curl_exec($ch);
+            curl_close($ch);
+            
+            $result = json_decode($response, true);
+            
+            if ($result && $result['success']) {
+                $image_path = $result['path'];
+            } else {
+                throw new Exception($result['message'] ?? 'Failed to upload image');
             }
-
-            // Store relative path in database
-            $image_path = 'images/Uploads/' . $image_name;
+        } else {
+            // No image uploaded or upload failed
+            $image_path = null;
         }
 
         // Check if all required fields are filled
@@ -66,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'prize' => $prize,
             'entry_fee' => $entry_fee,
             'registration_link' => $registration_link,
-            'image_path' => $image_path
+            'image_path' => $image_path ? $image_path : null
         ]);
 
         // Redirect to tournaments page with success message
