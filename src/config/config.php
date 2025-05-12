@@ -141,9 +141,9 @@ function executeQuery($query, $params = []) {
         $sanitized_params = array_map(function($param) {
             if (is_string($param)) {
                 // Remover caracteres perigosos
-                $param = preg_replace('/[\\x00-\\x1F\\x7F\\x80-\\x9F]/', '', $param);
+                $param = preg_replace('/[\x00-\x1F\x7F\x80-\x9F]/', '', $param);
                 // Remover padrões de injeção SQL
-                $param = preg_replace('/--|;|#|\\/\\*|\\*|\\//', '', $param);
+                $param = preg_replace('/--|;|#|\/\*/', '', $param);
             }
             return $param;
         }, $params);
