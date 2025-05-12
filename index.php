@@ -1,7 +1,5 @@
 <?php
-// Incluindo o header
 include 'src/components/header.php';
-
 ?>
 
   <section id="home" class="hero">
@@ -222,7 +220,6 @@ include 'src/components/header.php';
   </section>
 
 <?php
-// Incluindo o footer
 include 'src/components/footer.php';
 ?>
 
