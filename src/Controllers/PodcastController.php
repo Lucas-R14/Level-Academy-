@@ -6,22 +6,35 @@ class PodcastController {
         $this->pdo = $pdo;
     }
     
+    // Get total number of podcasts
+    public function getTotalPodcasts() {
+        try {
+            $result = executeQuery("SELECT COUNT(*) FROM podcasts");
+            if ($result['success']) {
+                return $result['results'][0]['COUNT(*)'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
+            throw new Exception("Error counting podcasts: " . $e->getMessage());
+        }
+    }
+    
     // Create new podcast
     public function create($data) {
         try {
-            $stmt = $this->pdo->prepare(
+            $result = executeQuery(
                 "INSERT INTO podcasts (title, youtube_link)
-                VALUES (:title, :youtube_link)"
+                VALUES (:title, :youtube_link)",
+                [
+                    ':title' => htmlspecialchars($data['title']),
+                    ':youtube_link' => htmlspecialchars($data['youtube_link'])
+                ]
             );
-            
-            $stmt->execute([
-                ':title' => htmlspecialchars($data['title']),
-                ':youtube_link' => htmlspecialchars($data['youtube_link'])
-            ]);
-
-            
-            return $this->pdo->lastInsertId();
-        } catch (PDOException $e) {
+            if ($result['success']) {
+                return $result['lastInsertId'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error creating podcast: " . $e->getMessage());
         }
     }
@@ -29,10 +42,12 @@ class PodcastController {
     // Get all podcasts
     public function getAll() {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM podcasts ORDER BY created_at DESC");
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = executeQuery("SELECT * FROM podcasts ORDER BY created_at DESC");
+            if ($result['success']) {
+                return $result['results'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error fetching podcasts: " . $e->getMessage());
         }
     }
@@ -40,10 +55,12 @@ class PodcastController {
     // Get single podcast
     public function get($id) {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM podcasts WHERE id = :id");
-            $stmt->execute([':id' => $id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = executeQuery("SELECT * FROM podcasts WHERE id = :id", [':id' => $id]);
+            if ($result['success']) {
+                return $result['results'][0] ?? null;
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error fetching podcast: " . $e->getMessage());
         }
     }
@@ -51,21 +68,22 @@ class PodcastController {
     // Update podcast
     public function update($id, $data) {
         try {
-            $stmt = $this->pdo->prepare(
+            $result = executeQuery(
                 "UPDATE podcasts 
                 SET title = :title, 
                     youtube_link = :youtube_link
-                WHERE id = :id"
+                WHERE id = :id",
+                [
+                    ':id' => $id,
+                    ':title' => htmlspecialchars($data['title']),
+                    ':youtube_link' => htmlspecialchars($data['youtube_link'])
+                ]
             );
-            
-            $stmt->execute([
-                ':id' => $id,
-                ':title' => htmlspecialchars($data['title']),
-                ':youtube_link' => htmlspecialchars($data['youtube_link'])
-            ]);
-            
-            return $stmt->rowCount();
-        } catch (PDOException $e) {
+            if ($result['success']) {
+                return $result['affectedRows'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error updating podcast: " . $e->getMessage());
         }
     }
@@ -73,22 +91,17 @@ class PodcastController {
     // Delete podcast
     public function delete($id) {
         try {
-            $stmt = $this->pdo->prepare("DELETE FROM podcasts WHERE id = :id");
-            $stmt->execute([':id' => $id]);
-            return $stmt->rowCount();
-        } catch (PDOException $e) {
+            $result = executeQuery("DELETE FROM podcasts WHERE id = :id", [':id' => $id]);
+            if ($result['success']) {
+                return $result['affectedRows'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error deleting podcast: " . $e->getMessage());
         }
     }
+
+
     
-    // Get total number of podcasts
-    public function getTotalPodcasts() {
-        try {
-            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM podcasts");
-            $stmt->execute();
-            return $stmt->fetchColumn();
-        } catch (PDOException $e) {
-            throw new Exception("Error counting podcasts: " . $e->getMessage());
-        }
-    }
+
 }

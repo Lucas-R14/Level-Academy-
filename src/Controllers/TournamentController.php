@@ -9,24 +9,25 @@ class TournamentController {
     // Create new tournament
     public function create($data) {
         try {
-            $stmt = $this->pdo->prepare("
-                INSERT INTO tournaments (title, Format, event_date, location, prize, entry_fee, registration_link, image_path)
-                VALUES (:title, :format, :event_date, :location, :prize, :entry_fee, :registration_link, :image_path)
-            ");
-            
-            $stmt->execute([
-                ':title' => htmlspecialchars($data['title']),
-                ':format' => htmlspecialchars($data['format']),
-                ':event_date' => $data['event_date'],
-                ':location' => htmlspecialchars($data['location']),
-                ':prize' => $data['prize'],
-                ':entry_fee' => $data['entry_fee'],
-                ':registration_link' => htmlspecialchars($data['registration_link']),
-                ':image_path' => $data['image_path'] ?? null
-            ]);
-            
-            return $this->pdo->lastInsertId();
-        } catch (PDOException $e) {
+            $result = executeQuery(
+                "INSERT INTO tournaments (title, Format, event_date, location, prize, entry_fee, registration_link, image_path)
+                VALUES (:title, :format, :event_date, :location, :prize, :entry_fee, :registration_link, :image_path)",
+                [
+                    ':title' => htmlspecialchars($data['title']),
+                    ':format' => htmlspecialchars($data['format']),
+                    ':event_date' => $data['event_date'],
+                    ':location' => htmlspecialchars($data['location']),
+                    ':prize' => $data['prize'],
+                    ':entry_fee' => $data['entry_fee'],
+                    ':registration_link' => htmlspecialchars($data['registration_link']),
+                    ':image_path' => $data['image_path'] ?? null
+                ]
+            );
+            if ($result['success']) {
+                return $result['lastInsertId'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error creating tournament: " . $e->getMessage());
         }
     }
@@ -34,10 +35,12 @@ class TournamentController {
     // Get all tournaments
     public function getAll() {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM tournaments ORDER BY event_date DESC");
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = executeQuery("SELECT * FROM tournaments ORDER BY event_date DESC");
+            if ($result['success']) {
+                return $result['results'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error fetching tournaments: " . $e->getMessage());
         }
     }
@@ -45,10 +48,12 @@ class TournamentController {
     // Get single tournament
     public function get($id) {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM tournaments WHERE id = :id");
-            $stmt->execute([':id' => $id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = executeQuery("SELECT * FROM tournaments WHERE id = :id", [':id' => $id]);
+            if ($result['success']) {
+                return $result['results'][0] ?? null;
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error fetching tournament: " . $e->getMessage());
         }
     }
@@ -56,8 +61,8 @@ class TournamentController {
     // Update tournament
     public function update($id, $data) {
         try {
-            $stmt = $this->pdo->prepare("
-                UPDATE tournaments 
+            $result = executeQuery(
+                "UPDATE tournaments 
                 SET title = :title, 
                     Format = :format, 
                     event_date = :event_date, 
@@ -66,23 +71,24 @@ class TournamentController {
                     entry_fee = :entry_fee, 
                     registration_link = :registration_link,
                     image_path = :image_path
-                WHERE id = :id
-            ");
-            
-            $stmt->execute([
-                ':id' => $id,
-                ':title' => htmlspecialchars($data['title']),
-                ':format' => htmlspecialchars($data['format']),
-                ':event_date' => $data['event_date'],
-                ':location' => htmlspecialchars($data['location']),
-                ':prize' => $data['prize'],
-                ':entry_fee' => $data['entry_fee'],
-                ':registration_link' => htmlspecialchars($data['registration_link']),
-                ':image_path' => $data['image_path'] ?? null
-            ]);
-            
-            return $stmt->rowCount();
-        } catch (PDOException $e) {
+                WHERE id = :id",
+                [
+                    ':id' => $id,
+                    ':title' => htmlspecialchars($data['title']),
+                    ':format' => htmlspecialchars($data['format']),
+                    ':event_date' => $data['event_date'],
+                    ':location' => htmlspecialchars($data['location']),
+                    ':prize' => $data['prize'],
+                    ':entry_fee' => $data['entry_fee'],
+                    ':registration_link' => htmlspecialchars($data['registration_link']),
+                    ':image_path' => $data['image_path'] ?? null
+                ]
+            );
+            if ($result['success']) {
+                return $result['affectedRows'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error updating tournament: " . $e->getMessage());
         }
     }
@@ -90,10 +96,12 @@ class TournamentController {
     // Delete tournament
     public function delete($id) {
         try {
-            $stmt = $this->pdo->prepare("DELETE FROM tournaments WHERE id = :id");
-            $stmt->execute([':id' => $id]);
-            return $stmt->rowCount();
-        } catch (PDOException $e) {
+            $result = executeQuery("DELETE FROM tournaments WHERE id = :id", [':id' => $id]);
+            if ($result['success']) {
+                return $result['affectedRows'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error deleting tournament: " . $e->getMessage());
         }
     }
@@ -101,10 +109,12 @@ class TournamentController {
     // Get total number of tournaments
     public function getTotalTournaments() {
         try {
-            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM tournaments");
-            $stmt->execute();
-            return $stmt->fetchColumn();
-        } catch (PDOException $e) {
+            $result = executeQuery("SELECT COUNT(*) FROM tournaments");
+            if ($result['success']) {
+                return $result['results'][0]['COUNT(*)'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error counting tournaments: " . $e->getMessage());
         }
     }

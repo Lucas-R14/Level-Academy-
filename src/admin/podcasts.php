@@ -115,7 +115,3 @@ require_once 'includes/header.php';
     margin-bottom: 20px;
 }
 </style>
-
-<?php
-// Close PHP tag at the end of the file
-?>

@@ -11,10 +11,12 @@ class CategoryController {
     // Get all categories
     public function getAll() {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM categories ORDER BY name");
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = executeQuery("SELECT * FROM categories ORDER BY name");
+            if ($result['success']) {
+                return $result['results'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error fetching categories: " . $e->getMessage());
         }
     }
@@ -22,10 +24,12 @@ class CategoryController {
     // Get single category
     public function get($id) {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM categories WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = executeQuery("SELECT * FROM categories WHERE id = ?", [$id]);
+            if ($result['success']) {
+                return $result['results'][0] ?? null;
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error fetching category: " . $e->getMessage());
         }
     }
@@ -33,10 +37,12 @@ class CategoryController {
     // Create new category
     public function create($name) {
         try {
-            $stmt = $this->pdo->prepare("INSERT INTO categories (name) VALUES (?)");
-            $stmt->execute([htmlspecialchars($name)]);
-            return $this->pdo->lastInsertId();
-        } catch (PDOException $e) {
+            $result = executeQuery("INSERT INTO categories (name) VALUES (?)", [htmlspecialchars($name)]);
+            if ($result['success']) {
+                return $result['lastInsertId'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error creating category: " . $e->getMessage());
         }
     }
@@ -44,9 +50,12 @@ class CategoryController {
     // Update category
     public function update($id, $name) {
         try {
-            $stmt = $this->pdo->prepare("UPDATE categories SET name = ? WHERE id = ?");
-            return $stmt->execute([htmlspecialchars($name), $id]);
-        } catch (PDOException $e) {
+            $result = executeQuery("UPDATE categories SET name = ? WHERE id = ?", [htmlspecialchars($name), $id]);
+            if ($result['success']) {
+                return $result['affectedRows'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
             throw new Exception("Error updating category: " . $e->getMessage());
         }
     }
@@ -55,16 +64,17 @@ class CategoryController {
     public function delete($id) {
         try {
             // First check if category is used in articles
-            $stmt = $this->pdo->prepare("SELECT COUNT(*) as count FROM articles WHERE Category = (SELECT name FROM categories WHERE id = ?)");
-            $stmt->execute([$id]);
-            if ($stmt->fetch(PDO::FETCH_ASSOC)['count'] > 0) {
+            $result = executeQuery("SELECT COUNT(*) as count FROM articles WHERE Category = (SELECT name FROM categories WHERE id = ?)", [$id]);
+            if ($result['success'] && $result['results'][0]['count'] > 0) {
                 throw new Exception("Cannot delete category because it's being used in articles.");
             }
             
-            $stmt = $this->pdo->prepare("DELETE FROM categories WHERE id = ?");
-            return $stmt->execute([$id]);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            // Delete the category
+            $result = executeQuery("DELETE FROM categories WHERE id = ?", [$id]);
+            if ($result['success']) {
+                return $result['affectedRows'];
+            }
+            throw new Exception($result['error']);
         } catch (Exception $e) {
             throw new Exception("Error deleting category: " . $e->getMessage());
         }
