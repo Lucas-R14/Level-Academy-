@@ -1,6 +1,17 @@
 <?php
-// Header do site
+// Header of website
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Academy - Inside Out Summer Camp 2025</title>
+  <link rel="stylesheet" href="./public/assets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Orbitron:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
 <header>
   <div class="container">
     <nav>
@@ -13,13 +24,13 @@
             <a href="#courses">Offers</a>
             <a href="#news">News</a>
             <a href="#afkseries">AFK Series</a>
-            <a href="./src/pages/faculty.php">Faculty</a>
+            <a href="faculty.php">Faculty</a>
             <a href="#contact">Contact</a>
           </div>
         </div>
         <a href="./public/pages/tournaments.html">Tournaments</a>
         <a href="./public/pages/Article.html">Articles</a>
-        <a href="../pages/insideout.php">Inside Out</a>
+        <a href="insideout.php">Inside Out</a>
       </div>
     </nav>
   </div>
