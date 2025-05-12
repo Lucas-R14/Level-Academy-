@@ -32,8 +32,10 @@
             align-items: center;
             justify-content: center;
             gap: 4rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
+            padding-left: 1vw;
+            padding-right: 1vw;
+            margin: 0;
             flex-wrap: wrap;
         }
         .insideout-hero-img {
@@ -78,23 +80,151 @@
         .insideout-hero-text p:last-child {
             margin-bottom: 0;
         }
-        @media (max-width: 900px) {
-            .insideout-hero-content {
+        /* Separator Line */
+        .programs-separator {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+            background: #000;
+        }
+        .programs-separator:before {
+            content: "";
+            height: 1px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+            flex-grow: 1;
+            margin-right: 1.5rem;
+        }
+        .programs-separator:after {
+            content: "";
+            height: 1px;
+            background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,0.2), rgba(255,255,255,0));
+            flex-grow: 1;
+            margin-left: 1.5rem;
+        }
+        .programs-separator-text {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: #6c3be4;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .programs-separator-icon {
+            font-size: 1.2rem;
+            color: #6c3be4;
+        }
+        /* Programs Images Only */
+        .programs-section {
+            background: #000;
+            padding: 4rem 0 4rem 0;
+        }
+        .programs-images {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 3vw;
+            flex-wrap: wrap;
+            width: 100%;
+            padding-left: 1vw;
+            padding-right: 1vw;
+        }
+        .program-img {
+            width: 440px;
+            max-width: 98vw;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .program-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        @media (max-width: 1100px) {
+            .programs-images {
                 flex-direction: column;
-                gap: 2.5rem;
+                align-items: center;
+                gap: 2rem;
             }
-            .insideout-hero-img {
-                width: 260px;
-                height: 260px;
-                min-width: 180px;
+            .program-img {
+                width: 98vw;
+                max-width: 98vw;
             }
-            .insideout-hero-text {
-                max-width: 100%;
-            }
-            .insideout-title {
-                font-size: 1.5rem;
-                margin-bottom: 2rem;
-            }
+        }
+        
+        /* Buttons Section */
+        .buttons-section {
+            background: #000;
+            padding: 2rem 0 5rem 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        .action-button {
+            display: inline-block;
+            background: #f2f2f2;
+            color: #333;
+            text-decoration: none;
+            padding: 1rem 6rem;
+            border-radius: 2rem;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            min-width: 280px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .action-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+        .action-button:hover {
+            background: #e0e0e0;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            color: #000;
+        }
+        .action-button:hover:before {
+            left: 100%;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background: #000;
+            padding: 1rem 0 4rem 0;
+            text-align: center;
+        }
+        .contact-text {
+            font-family: 'Exo 2', sans-serif;
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 400;
         }
     </style>
 </head>
@@ -117,6 +247,41 @@ include '../components/header.php';
             <p>See bellow for the pricing and course guide and the links for registration as well as the esports summer camp 2025 brochure.</p>
         </div>
     </div>
+</div>
+
+<!-- Separator Line -->
+<div class="programs-separator">
+    <div class="programs-separator-text">
+        <i class="fas fa-gamepad programs-separator-icon"></i> Programs
+    </div>
+</div>
+
+<!-- Programs Images Only -->
+<section class="programs-section">
+    <div class="programs-images">
+        <div class="program-img">
+            <img src="../../public/assets/images/insideout/2day.png" alt="2 Day Programme">
+        </div>
+        <div class="program-img">
+            <img src="../../public/assets/images/insideout/3day.png" alt="3 Day Programme">
+        </div>
+        <div class="program-img">
+            <img src="../../public/assets/images/insideout/5day.png" alt="5 Day Programme">
+        </div>
+    </div>
+</section>
+
+<!-- Buttons Section -->
+<div class="buttons-section">
+    <div class="container">
+        <a href="https://levelacademy.com.mt/wp-content/uploads/2025/02/InsideOut-2025-Brochure-1.pdf" target="_blank" class="action-button">Brochure</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScmLD0PYxSiNooGa-GAfX0nql8zHrHoUwT_VeozdbJ-jHu-7Q/viewform" target="_blank" class="action-button">Register</a>
+    </div>
+</div>
+
+<!-- Contact Section -->
+<div class="contact-section">
+    <h2 class="contact-text">Contact us here: info@levelacademy.com.mt</h2>
 </div>
 
 <?php
