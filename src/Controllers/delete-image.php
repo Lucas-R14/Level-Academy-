@@ -1,6 +1,14 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/config.php';
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../admin/login.php');
+    exit;
+}
 
 // Define allowed upload directories
 $ALLOWED_DIRECTORIES = [

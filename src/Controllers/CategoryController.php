@@ -1,6 +1,6 @@
 <?php
-require_once '../config/config.php';
 
+require_once '../config/config.php';
 class CategoryController {
     private $pdo;
     
@@ -36,6 +36,15 @@ class CategoryController {
     
     // Create new category
     public function create($name) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery("INSERT INTO categories (name) VALUES (?)", [htmlspecialchars($name)]);
             if ($result['success']) {
@@ -49,6 +58,15 @@ class CategoryController {
     
     // Update category
     public function update($id, $name) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery("UPDATE categories SET name = ? WHERE id = ?", [htmlspecialchars($name), $id]);
             if ($result['success']) {
@@ -62,6 +80,15 @@ class CategoryController {
     
     // Delete category
     public function delete($id) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             // First check if category is used in articles
             $result = executeQuery("SELECT COUNT(*) as count FROM articles WHERE Category = (SELECT name FROM categories WHERE id = ?)", [$id]);

@@ -22,6 +22,16 @@ class User {
     }
 
     public function register($username, $password, $email, $role = 'user') {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
+        
         try {
             $salt = $this->generateSalt();
             $hashed_password = $this->hashPassword($password, $salt);

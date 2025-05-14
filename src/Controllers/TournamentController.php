@@ -1,4 +1,14 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once '../config/config.php';
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../admin/login.php');
+    exit;
+}
 class TournamentController {
     private $pdo;
     
@@ -8,6 +18,15 @@ class TournamentController {
     
     // Create new tournament
     public function create($data) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery(
                 "INSERT INTO tournaments (title, Format, event_date, location, prize, entry_fee, registration_link, image_path)
@@ -60,6 +79,15 @@ class TournamentController {
     
     // Update tournament
     public function update($id, $data) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }   
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery(
                 "UPDATE tournaments 
@@ -95,6 +123,15 @@ class TournamentController {
     
     // Delete tournament
     public function delete($id) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery("DELETE FROM tournaments WHERE id = :id", [':id' => $id]);
             if ($result['success']) {

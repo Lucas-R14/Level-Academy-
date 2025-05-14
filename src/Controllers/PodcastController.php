@@ -1,4 +1,5 @@
 <?php
+require_once '../config/config.php';
 class PodcastController {
     private $pdo;
     
@@ -21,6 +22,15 @@ class PodcastController {
     
     // Create new podcast
     public function create($data) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery(
                 "INSERT INTO podcasts (title, youtube_link)
@@ -67,6 +77,15 @@ class PodcastController {
     
     // Update podcast
     public function update($id, $data) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery(
                 "UPDATE podcasts 
@@ -90,6 +109,15 @@ class PodcastController {
     
     // Delete podcast
     public function delete($id) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery("DELETE FROM podcasts WHERE id = :id", [':id' => $id]);
             if ($result['success']) {

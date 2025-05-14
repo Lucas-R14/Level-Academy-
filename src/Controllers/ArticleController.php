@@ -1,5 +1,6 @@
 <?php
-require_once '../config/config.php';
+
+require_once '../config/config.php';   
 
 class ArticleController {
     private $pdo;
@@ -10,6 +11,16 @@ class ArticleController {
     
     // Get all categories
     public function getCategories() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
+
         try {
             $result = executeQuery("SELECT Id as id, Name as name FROM category ORDER BY Name");
             if ($result['success']) {
@@ -48,6 +59,17 @@ class ArticleController {
     
     // Create new article
     public function create($title, $content, $author, $category) {
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
+
         try {
             // Verify category exists
             if (!$this->categoryExists($category)) {
@@ -69,6 +91,16 @@ class ArticleController {
     
     // Get all articles (for admin)
     public function getAll() {
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery("SELECT * FROM articles ORDER BY created_at DESC");
             if ($result['success']) {
@@ -144,6 +176,17 @@ class ArticleController {
     
     // Update article
     public function update($id, $title, $content, $author, $category) {
+        
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
+        
         try {
             // Verify category exists
             if (!$this->categoryExists($category)) {
@@ -177,6 +220,16 @@ class ArticleController {
     
     // Delete article
     public function delete($id) {
+
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Ensure user is logged in
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ../admin/login.php');
+            exit;
+        }
         try {
             $result = executeQuery(
                 "DELETE FROM articles WHERE id = ?",
