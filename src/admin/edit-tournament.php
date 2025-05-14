@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'title' => filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING),
                 'format' => filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING),
                 'event_date' => filter_input(INPUT_POST, 'event_date', FILTER_SANITIZE_STRING),
+                'start_time' => filter_input(INPUT_POST, 'start_time', FILTER_SANITIZE_STRING),
                 'location' => filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING),
                 'prize' => filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_STRING),
                 'entry_fee' => filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
@@ -114,6 +115,20 @@ require_once 'includes/header.php';
         <div class="form-group">
             <label for="event_date">Event Date</label>
             <input type="date" id="event_date" name="event_date" value="<?php echo htmlspecialchars($tournament['event_date']); ?>" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="start_time">Start Time (24-hour format)</label>
+            <?php 
+            // Extract just the time part from the database value (HH:MM:SS)
+            $timeValue = '';
+            if (!empty($tournament['start_time'])) {
+                $timeParts = explode(' ', $tournament['start_time']);
+                $timeValue = end($timeParts); // Get the last part in case it includes date
+                $timeValue = substr($timeValue, 0, 5); // Get just HH:MM
+            }
+            ?>
+            <input type="time" id="start_time" name="start_time" step="1" value="<?php echo htmlspecialchars($timeValue); ?>" class="form-control">
+            <input type="hidden" id="formatted_start_time" name="formatted_start_time">
         </div>
         <div class="form-group">
             <label for="location">Location</label>
