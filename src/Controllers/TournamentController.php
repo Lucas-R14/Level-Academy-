@@ -28,13 +28,17 @@ class TournamentController {
             exit;
         }
         try {
+            // Get the formatted start time or use the provided one
+            $start_time = !empty($data['formatted_start_time']) ? $data['formatted_start_time'] : ($data['start_time'] ?? null);
+            
             $result = executeQuery(
-                "INSERT INTO tournaments (title, Format, event_date, location, prize, entry_fee, registration_link, image_path)
-                VALUES (:title, :format, :event_date, :location, :prize, :entry_fee, :registration_link, :image_path)",
+                "INSERT INTO tournaments (title, Format, event_date, start_time, location, prize, entry_fee, registration_link, image_path)
+                VALUES (:title, :format, :event_date, :start_time, :location, :prize, :entry_fee, :registration_link, :image_path)",
                 [
                     ':title' => htmlspecialchars($data['title']),
                     ':format' => htmlspecialchars($data['format']),
                     ':event_date' => $data['event_date'],
+                    ':start_time' => $start_time,
                     ':location' => htmlspecialchars($data['location']),
                     ':prize' => $data['prize'],
                     ':entry_fee' => $data['entry_fee'],
@@ -94,6 +98,7 @@ class TournamentController {
                 SET title = :title, 
                     Format = :format, 
                     event_date = :event_date, 
+                    start_time = :start_time,
                     location = :location, 
                     prize = :prize, 
                     entry_fee = :entry_fee, 
@@ -105,6 +110,7 @@ class TournamentController {
                     ':title' => htmlspecialchars($data['title']),
                     ':format' => htmlspecialchars($data['format']),
                     ':event_date' => $data['event_date'],
+                    ':start_time' => !empty($data['formatted_start_time']) ? $data['formatted_start_time'] : ($data['start_time'] ?? null),
                     ':location' => htmlspecialchars($data['location']),
                     ':prize' => $data['prize'],
                     ':entry_fee' => $data['entry_fee'],

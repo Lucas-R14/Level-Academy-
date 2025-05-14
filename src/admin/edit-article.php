@@ -114,7 +114,7 @@ require_once 'includes/header.php';
                 <select id="category" name="category" required class="form-control">
                     <?php foreach ($categories as $category): ?>
                         <option value="<?php echo htmlspecialchars($category['id']); ?>"
-                            <?php echo $category['id'] == $articleData['category_id'] ? 'selected' : ''; ?>>
+                            <?php echo $category['id'] == $articleData['Category'] ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($category['name']); ?>
                         </option>
                     <?php endforeach; ?>

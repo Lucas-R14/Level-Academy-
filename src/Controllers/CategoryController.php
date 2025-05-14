@@ -48,7 +48,7 @@ class CategoryController {
         try {
             $result = executeQuery("INSERT INTO categories (name) VALUES (?)", [htmlspecialchars($name)]);
             if ($result['success']) {
-                return $result['lastInsertId'];
+                return true;
             }
             throw new Exception($result['error']);
         } catch (Exception $e) {

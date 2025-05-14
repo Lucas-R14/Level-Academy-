@@ -39,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['article_submit'])) {
             htmlspecialchars($author),
             (int)$category
         );
-
+        
         // Show success message and redirect
-        header('Location: articles.php?success=Article created successfully!');
-        exit;
+            header('Location: articles.php?success=Article created successfully!');
+            exit;
 
     } catch (Exception $e) {
         $error = $e->getMessage();

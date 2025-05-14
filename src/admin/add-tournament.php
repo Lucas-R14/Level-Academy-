@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
         $format = filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING);
         $event_date = filter_input(INPUT_POST, 'event_date', FILTER_SANITIZE_STRING);
+        $start_time = filter_input(INPUT_POST, 'start_time', FILTER_SANITIZE_STRING);
         $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
         $prize = filter_input(INPUT_POST, 'prize', FILTER_SANITIZE_NUMBER_INT);
         $entry_fee = filter_input(INPUT_POST, 'entry_fee', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -63,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'title' => $title,
             'format' => $format,
             'event_date' => $event_date,
+            'start_time' => $start_time,
             'location' => $location,
             'prize' => $prize,
             'entry_fee' => $entry_fee,
@@ -109,6 +111,11 @@ require_once 'includes/header.php';
         <div class="form-group">
             <label for="event_date">Event Date</label>
             <input type="date" id="event_date" name="event_date" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="start_time">Start Time (24-hour format)</label>
+            <input type="time" id="start_time" name="start_time" step="1" class="form-control" required>
+            <input type="hidden" id="formatted_start_time" name="formatted_start_time">
         </div>
         <div class="form-group">
             <label for="location">Location</label>

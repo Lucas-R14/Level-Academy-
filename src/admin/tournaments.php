@@ -85,7 +85,7 @@ require_once 'includes/header.php';
                     <td><?php echo htmlspecialchars($tournament['Format']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['event_date']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['location']); ?></td>
-                    <td><?php echo htmlspecialchars($tournament['prize']); ?></td>
+                    <td><?php echo $tournament['prize'] == 1 ? 'Available' : 'Unavailable'; ?></td>
                     <td><?php echo htmlspecialchars($tournament['entry_fee']); ?></td>
                     <td class="actions-cell">
                         <a href="edit-tournament.php?id=<?php echo htmlspecialchars($tournament['id']); ?>" class="btn btn-edit" title="Edit Tournament">
