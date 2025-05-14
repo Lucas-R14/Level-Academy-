@@ -66,12 +66,16 @@ require_once 'includes/header.php';
                         <td><?php echo htmlspecialchars($podcast['title']); ?></td>
                         <td><a href="<?php echo htmlspecialchars($podcast['youtube_link']); ?>" target="_blank"><?php echo htmlspecialchars($podcast['youtube_link']); ?></a></td>
                         <td><?php echo date('Y-m-d H:i:s', strtotime($podcast['created_at'])); ?></td>
-                        <td>
-                            <a href="edit-podcast.php?id=<?php echo $podcast['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
-                            <form method="POST" style="display: inline;">
+                        <td class="actions-cell">
+                            <a href="edit-podcast.php?id=<?php echo $podcast['id']; ?>" class="btn btn-edit" title="Edit Podcast">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this podcast?');">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="<?php echo $podcast['id']; ?>">
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this podcast?')">Delete</button>
+                                <button type="submit" class="btn btn-delete" title="Delete Podcast">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -104,9 +108,50 @@ require_once 'includes/header.php';
     margin-bottom: 20px;
 }
 
-.btn-sm {
-    padding: 4px 8px;
+.actions-cell {
+    white-space: nowrap;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    margin-right: 5px;
+}
+
+.btn i {
     font-size: 14px;
+}
+
+.btn-edit {
+    background-color: #17a2b8;
+    color: white;
+    border: 1px solid #17a2b8;
+}
+
+.btn-edit:hover {
+    background-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .actions {

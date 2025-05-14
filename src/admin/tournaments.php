@@ -87,12 +87,16 @@ require_once 'includes/header.php';
                     <td><?php echo htmlspecialchars($tournament['location']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['prize']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['entry_fee']); ?></td>
-                    <td>
-                        <a href="edit-tournament.php?id=<?php echo htmlspecialchars($tournament['id']); ?>" class="btn btn-sm btn-primary">Edit</a>
+                    <td class="actions-cell">
+                        <a href="edit-tournament.php?id=<?php echo htmlspecialchars($tournament['id']); ?>" class="btn btn-edit" title="Edit Tournament">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
                         <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this tournament?');">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($tournament['id']); ?>">
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-delete" title="Delete Tournament">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -141,13 +145,50 @@ require_once 'includes/header.php';
     background-color: #f5f5f5;
 }
 
+.actions-cell {
+    white-space: nowrap;
+}
+
 .btn {
-    padding: 8px 16px;
+    padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    margin-right: 5px;
+}
+
+.btn i {
+    font-size: 14px;
+}
+
+.btn-edit {
+    background-color: #17a2b8;
+    color: white;
+    border: 1px solid #17a2b8;
+}
+
+.btn-edit:hover {
+    background-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .btn-primary {
@@ -157,11 +198,6 @@ require_once 'includes/header.php';
 
 .btn-secondary {
     background-color: #6c757d;
-    color: white;
-}
-
-.btn-danger {
-    background-color: #dc3545;
     color: white;
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 class PasswordHasher {
     private $salt_length = 32;
 

@@ -65,10 +65,44 @@ require_once 'includes/header.php';
                 <i class="fas fa-calendar"></i> <?php echo date('F j, Y', strtotime($article['created_at'])); ?>
             </div>
             <div class="article-actions">
-                <a href="view-article.php?id=<?php echo $article['id']; ?>" class="btn btn-info">View</a>
-                <a href="edit-article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary">Edit</a>
-                <a href="delete-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this article?')">Delete</a>
+                <a href="view-article.php?id=<?php echo $article['id']; ?>" class="btn btn-view" title="View Article">
+                    <i class="fas fa-eye"></i> View
+                </a>
+                <a href="edit-article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary" title="Edit Article">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="delete-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this article?')" title="Delete Article">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
             </div>
+            <style>
+                .btn-view {
+                    background-color: #17a2b8;
+                    color: white;
+                    border: 1px solid #17a2b8;
+                    padding: 6px 12px;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    transition: all 0.3s ease;
+                }
+                .btn-view:hover {
+                    background-color: #138496;
+                    border-color: #117a8b;
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                }
+                .btn-view i {
+                    font-size: 14px;
+                }
+                .article-actions {
+                    display: flex;
+                    gap: 8px;
+                    margin-top: 12px;
+                }
+            </style>
         </div>
         <?php endforeach; ?>
     <?php endif; ?>
