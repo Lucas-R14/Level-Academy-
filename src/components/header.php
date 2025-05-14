@@ -28,8 +28,8 @@
             <a href="#contact">Contact</a>
           </div>
         </div>
-        <a href="./public/pages/tournaments.html">Tournaments</a>
-        <a href="./public/pages/Article.html">Articles</a>
+        <a href="tournaments.php">Tournaments</a>
+        <a href="articles.php">Articles</a>
         <a href="insideout.php">Inside Out</a>
       </div>
     </nav>
