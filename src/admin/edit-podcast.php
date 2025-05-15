@@ -1,16 +1,22 @@
 <?php
 session_start();
 require_once '../config/config.php';
+require_once '../Controllers/User.php';
 require_once dirname(__FILE__) . '/../Controllers/PodcastController.php';
+
+
+$user = new User(getPDO());
+
+// Ensure user is logged in and is admin
+if (!$user->isLoggedIn() || !$user->isAdmin()) {
+    $_SESSION['error'] = 'You do not have permission to perform this action';
+    header('Location: login.php');
+    exit();
+}
+
 
 // Initialize PodcastController
 $podcastController = new PodcastController(getPDO());
-
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
 
 // Get podcast ID from URL
 $podcastId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);

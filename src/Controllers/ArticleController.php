@@ -1,6 +1,9 @@
 <?php
-
-require_once '../config/config.php';   
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../Controllers/User.php';
 
 class ArticleController {
     private $pdo;
@@ -11,15 +14,6 @@ class ArticleController {
     
     // Get all categories
     public function getCategories() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
 
         try {
             $result = executeQuery("SELECT Id as id, Name as name FROM category ORDER BY Name");
@@ -41,8 +35,6 @@ class ArticleController {
                  WHERE Id = ?",
                 [(int)$categoryId]
             );
-            $this->showAlert($categoryId);
-            $this->showAlert(!empty($result['results']));
             if ($result['success'] && !empty($result['results'])) {
                 return true;
             }
@@ -52,22 +44,18 @@ class ArticleController {
             return false;
         }
     }
-
-    function showAlert($message) {
-        echo "<script>alert('" . htmlspecialchars($message, ENT_QUOTES) . "');</script>";
-    }
     
     // Create new article
     public function create($title, $content, $author, $category) {
 
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
 
         try {
@@ -91,16 +79,6 @@ class ArticleController {
     
     // Get all articles (for admin)
     public function getAll() {
-
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
         try {
             $result = executeQuery("SELECT * FROM articles ORDER BY created_at DESC");
             if ($result['success']) {
@@ -177,16 +155,16 @@ class ArticleController {
     // Update article
     public function update($id, $title, $content, $author, $category) {
         
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
-        
+
         try {
             // Verify category exists
             if (!$this->categoryExists($category)) {
@@ -220,16 +198,16 @@ class ArticleController {
     
     // Delete article
     public function delete($id) {
+        // Initialize User
+        $user = new User(getPDO());
 
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
+
         try {
             $result = executeQuery(
                 "DELETE FROM articles WHERE id = ?",

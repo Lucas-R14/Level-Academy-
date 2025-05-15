@@ -1,6 +1,10 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../Controllers/User.php';
 
-require_once '../config/config.php';
 class CategoryController {
     private $pdo;
     
@@ -36,15 +40,17 @@ class CategoryController {
     
     // Create new category
     public function create($name) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
+
         try {
             $result = executeQuery("INSERT INTO categories (name) VALUES (?)", [htmlspecialchars($name)]);
             if ($result['success']) {
@@ -58,19 +64,20 @@ class CategoryController {
     
     // Update category
     public function update($id, $name) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
+
         try {
             $result = executeQuery("UPDATE categories SET name = ? WHERE id = ?", [htmlspecialchars($name), $id]);
             if ($result['success']) {
-                return $result['affectedRows'];
+                return true;
             }
             throw new Exception($result['error']);
         } catch (Exception $e) {
@@ -80,15 +87,16 @@ class CategoryController {
     
     // Delete category
     public function delete($id) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
+
         try {
             // First check if category is used in articles
             $result = executeQuery("SELECT COUNT(*) as count FROM articles WHERE Category = (SELECT name FROM categories WHERE id = ?)", [$id]);

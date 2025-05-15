@@ -1,11 +1,16 @@
 <?php
 session_start();
+require_once '../Controllers/User.php';
 require_once '../config/config.php';
 
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
+
+$user = new User(getPDO());
+
+// Ensure user is logged in and is admin
+if (!$user->isLoggedIn() || !$user->isAdmin()) {
+    $_SESSION['error'] = 'You do not have permission to perform this action';
     header('Location: login.php');
-    exit;
+    exit();
 }
 
 require_once dirname(__FILE__) . '/../Controllers/ArticleController.php';

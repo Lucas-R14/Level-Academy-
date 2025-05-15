@@ -1,5 +1,9 @@
 <?php
-require_once '../config/config.php';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../Controllers/User.php';
 class PodcastController {
     private $pdo;
     
@@ -22,15 +26,16 @@ class PodcastController {
     
     // Create new podcast
     public function create($data) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
+
         try {
             $result = executeQuery(
                 "INSERT INTO podcasts (title, youtube_link)
@@ -77,15 +82,16 @@ class PodcastController {
     
     // Update podcast
     public function update($id, $data) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
+
         try {
             $result = executeQuery(
                 "UPDATE podcasts 
@@ -109,15 +115,16 @@ class PodcastController {
     
     // Delete podcast
     public function delete($id) {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Initialize User
+        $user = new User(getPDO());
+
+        // Ensure user is logged in and is admin
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
-        
-        // Ensure user is logged in
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ../admin/login.php');
-            exit;
-        }
+
         try {
             $result = executeQuery("DELETE FROM podcasts WHERE id = :id", [':id' => $id]);
             if ($result['success']) {

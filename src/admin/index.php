@@ -1,37 +1,49 @@
 <?php
-session_start();
-
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// Include class filesphp
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../Controllers/User.php';
 require_once __DIR__ . '/../Controllers/ArticleController.php';
-require_once __DIR__ . '/../Controllers/TournamentController.php';
 require_once __DIR__ . '/../Controllers/PodcastController.php';
+require_once __DIR__ . '/../Controllers/TournamentController.php';
 
-// Initialize classes after header.php which contains $pdo
-$articleController = new ArticleController(getPDO());
-$podcastController = new PodcastController(getPDO());
-$tournamentController = new TournamentController(getPDO());
+// Ensure user is logged in and is admin
+if (!isset($_SESSION['user']['id']) || $_SESSION['user']['role'] !== 'admin') {
+    $_SESSION['error'] = 'You do not have permission to access this page';
+    header('Location: login.php');
+    exit();
+}
 
-// Get statistics
-$articleCount = $articleController->getTotalArticles();
-$podcastCount = $podcastController->getTotalPodcasts();
-$tournamentCount = $tournamentController->getTotalTournaments();
+try {
+    // Initialize controllers
+    $pdo = getPDO();
+    $articleController = new ArticleController($pdo); // Fixed class name
+    $podcastController = new PodcastController($pdo);
+    $tournamentController = new TournamentController($pdo);
+
+    // Get statistics
+    $articleCount = $articleController->getTotalArticles();
+    $podcastCount = $podcastController->getTotalPodcasts();
+    $tournamentCount = $tournamentController->getTotalTournaments();
+} catch (Exception $e) {
+    error_log('Dashboard error: ' . $e->getMessage());
+    $_SESSION['error'] = 'An error occurred while loading dashboard data';
+    $articleCount = $podcastCount = $tournamentCount = 0;
+}
+
+
+
+require_once 'includes/header.php';
 ?>
 
-<?php require_once 'includes/header.php'; ?>
-
 <div class="content-header">
-    <h2>Dashboard</h2>
+    <h2>Welcome, <?php echo htmlspecialchars($_SESSION['user']['username']); ?></h2>
     <div class="actions">
         <a href="logout.php" class="btn btn-danger">Logout</a>
     </div>
 </div>
-
 <div class="dashboard-stats">
     <div class="stat-card">
         <i class="fas fa-newspaper stat-icon"></i>
@@ -70,6 +82,7 @@ try {
             echo '<span><i class="fas fa-calendar"></i> ' . date('F j, Y', strtotime($article['created_at'])) . '</span>';
             echo '</div>';
             echo '<div class="article-actions">';
+            echo '<a href="view-article.php?id=' . $article['id'] . '" target="_blank" class="btn btn-view" title="View Article"><i class="fas fa-eye"></i> View</a>';
             echo '<a href="edit-article.php?id=' . $article['id'] . '" class="btn btn-edit" title="Edit Article"><i class="fas fa-edit"></i> Edit</a>';
             echo '<a href="delete-article.php?id=' . $article['id'] . '" class="btn btn-delete" onclick="return confirm(\'Are you sure you want to delete this article?\')" title="Delete Article">';
             echo '<i class="fas fa-trash"></i> Delete</a>';
@@ -224,21 +237,52 @@ try {
     .article-actions,
     .podcast-actions,
     .tournament-actions {
-        display: flex;
-        justify-content: flex-start;
         margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
     }
     .article-actions .btn,
     .podcast-actions .btn,
     .tournament-actions .btn {
-        margin-right: 10px;
-        display: flex;
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
+        padding: 8px 15px;
+        margin: 0 5px 5px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        gap: 5px;
     }
     .article-actions .btn i,
     .podcast-actions .btn i,
     .tournament-actions .btn i {
-        margin-right: 5px;
+        font-size: 0.9em;
+    }
+    .btn-view {
+        background-color: #3498db;
+        color: white;
+    }
+    .btn-edit {
+        background-color: #2ecc71;
+        color: white;
+    }
+    .btn-delete {
+        background-color: #e74c3c;
+        color: white;
+    }
+    .btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .btn:active {
+        transform: translateY(0);
     }
     
     @media (max-width: 1200px) {

@@ -2,12 +2,17 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../config/config.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../Controllers/User.php';
 
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../admin/login.php');
-    exit;
+// Initialize User
+$user = new User(getPDO());
+
+// Ensure user is logged in and is admin
+if (!$user->isLoggedIn() || !$user->isAdmin()) {
+    $_SESSION['error'] = 'You do not have permission to perform this action';
+    header('Location: login.php');
+    exit();
 }
 
 // Define allowed upload directories

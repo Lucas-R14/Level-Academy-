@@ -1,30 +1,21 @@
 <?php
 session_start();
 require_once '../config/config.php';
+require_once '../Controllers/User.php';
 
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
+$user = new User(getPDO());
+
+// Ensure user is logged in and is admin
+if (!$user->isLoggedIn() || !$user->isAdmin()) {
+    $_SESSION['error'] = 'You do not have permission to perform this action';
     header('Location: login.php');
-    exit;
+    exit();
 }
 
 require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
 
 // Initialize TournamentController
 $tournamentController = new TournamentController(getPDO());
-
-// Handle delete form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        if (isset($_POST['action']) && $_POST['action'] === 'delete' && isset($_POST['id'])) {
-            $tournamentController->delete($_POST['id']);
-            header('Location: tournaments.php?success=Tournament deleted successfully!');
-            exit;
-        }
-    } catch (Exception $e) {
-        $error = $e->getMessage();
-    }
-}
 
 // Get all tournaments
 $tournaments = $tournamentController->getAll();
@@ -91,8 +82,7 @@ require_once 'includes/header.php';
                         <a href="edit-tournament.php?id=<?php echo htmlspecialchars($tournament['id']); ?>" class="btn btn-edit" title="Edit Tournament">
                             <i class="fas fa-edit"></i> Edit
                         </a>
-                        <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this tournament?');">
-                            <input type="hidden" name="action" value="delete">
+                        <form action="delete-tournament.php" method="POST" class="delete-form" data-id="<?php echo htmlspecialchars($tournament['id']); ?>">
                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($tournament['id']); ?>">
                             <button type="submit" class="btn btn-delete" title="Delete Tournament">
                                 <i class="fas fa-trash"></i> Delete
@@ -105,6 +95,22 @@ require_once 'includes/header.php';
         </tbody>
     </table>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle delete form submission
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (confirm('Are you sure you want to delete this tournament?')) {
+                // Submit the form
+                form.submit();
+            }
+        });
+    });
+});
+</script>
 
 <style>
 .alert {

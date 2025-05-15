@@ -1,12 +1,16 @@
 <?php
 session_start();
-require_once '../config/config.php';
-require_once dirname(__FILE__) . '/../Controllers/PodcastController.php';
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../Controllers/User.php';
+require_once __DIR__ . '/../Controllers/PodcastController.php';
 
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
+// Initialize User
+$user = new User($pdo);
+
+// Ensure user is logged in and is admin
+if (!$user->isLoggedIn() || !$user->isAdmin()) {
     header('Location: login.php');
-    exit;
+    exit();
 }
 
 // Initialize PodcastController

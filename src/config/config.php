@@ -126,6 +126,14 @@ function getDatabaseConnection() {
             WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'admin')");
         $stmt->execute([$hashed_password, $salt]);
         
+        $salt = '9974e364b11119f156fcf11488687199';
+        $hashed_password = hash('sha256', $salt . 'user');
+        
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password, salt, role) 
+            SELECT 'user', 'user@example.com', ?, ?, 'user' 
+            WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'user')");
+        $stmt->execute([$hashed_password, $salt]);
+
         return $pdo;
     } catch(PDOException $e) {
         die("Falha na configuração da base de dados: " . $e->getMessage());
@@ -173,11 +181,18 @@ function executeQuery($query, $params = []) {
     }
 }
 
-// Obter ligação PDO (padrão singleton)
+// Get PDO connection (singleton pattern)
 function getPDO() {
     static $pdo = null;
     if ($pdo === null) {
-        $pdo = getDatabaseConnection();
+        try {
+            $pdo = getDatabaseConnection();
+            // Test the connection
+            $pdo->query('SELECT 1');
+        } catch (PDOException $e) {
+            error_log('Database connection failed: ' . $e->getMessage());
+            throw new Exception('Could not connect to the database. Please try again later.');
+        }
     }
     return $pdo;
 }

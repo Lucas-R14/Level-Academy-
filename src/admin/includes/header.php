@@ -209,7 +209,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <div class="sidebar-content">
             <ul class="sidebar-menu">
                 <li>
-                    <a href="dashboard.php" class="<?php echo $current_page === 'dashboard.php' ? 'active' : ''; ?>">
+                    <a href="index.php" class="<?php echo $current_page === 'index.php' ? 'active' : ''; ?>">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
                 </li>
