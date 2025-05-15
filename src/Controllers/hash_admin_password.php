@@ -8,24 +8,17 @@ class PasswordHasher {
     }
 
     public function hashPassword($password, $salt) {
-        return hash('sha256', $salt . $password);
+        // Combine salt and password, then hash with bcrypt
+        $salted_password = $salt . $password;
+        return [
+            'salt' => $salt,
+            'hashed_password' => password_hash($salted_password, PASSWORD_BCRYPT)
+        ];
     }
 
     public function hashAdminPassword($password) {
         $salt = $this->generateSalt();
-        $hashed_password = $this->hashPassword($password, $salt);
-        return [
-            'salt' => $salt,
-            'hashed_password' => $hashed_password
-        ];
+        return $this->hashPassword($password, $salt);
     }
 }
 
-// Hash the admin password
-$hasher = new PasswordHasher();
-$result = $hasher->hashAdminPassword('admin');
-
-// Output the results for database insertion
-echo "Salt: " . $result['salt'] . "\n";
-echo "Hashed Password: " . $result['hashed_password'] . "\n";
-?>

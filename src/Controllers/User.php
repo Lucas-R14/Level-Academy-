@@ -11,18 +11,24 @@ class User {
     private $username;
     private $email;
     private $role;
-    private $salt_length = 32;
 
     public function __construct($db) {
         $this->db = $db;
     }
+
+    private $salt_length = 32;
 
     private function generateSalt() {
         return bin2hex(random_bytes($this->salt_length / 2));
     }
 
     private function hashPassword($password, $salt) {
-        return hash('sha256', $salt . $password);
+        // Combine salt and password, then hash with bcrypt
+        $salted_password = $salt . $password;
+        return [
+            'salt' => $salt,
+            'hashed_password' => password_hash($salted_password, PASSWORD_BCRYPT)
+        ];
     }
 
     public function register($username, $password, $email, $role = 'user') {
@@ -38,11 +44,11 @@ class User {
         
         try {
             $salt = $this->generateSalt();
-            $hashed_password = $this->hashPassword($password, $salt);
+            $password_data = $this->hashPassword($password, $salt);
 
             $result = executeQuery(
                 "INSERT INTO users (username, password, salt, email, role) VALUES (?, ?, ?, ?, ?)",
-                [$username, $hashed_password, $salt, $email, $role]
+                [$username, $password_data['hashed_password'], $password_data['salt'], $email, $role]
             );
             
             if ($result['success']) {
@@ -66,7 +72,7 @@ class User {
             $stmt->execute([$username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user && $this->hashPassword($password, $user['salt']) === $user['password']) {
+            if ($user && password_verify($user['salt'] . $password, $user['password'])) {
                 // Start session if not already started
                 if (session_status() === PHP_SESSION_NONE) {
                     session_start();

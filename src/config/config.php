@@ -117,22 +117,31 @@ function getDatabaseConnection() {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
         
-        // Criar utilizador admin se não existir
-        $salt = '9974e364b11119f156fcf11488687199';
-        $hashed_password = hash('sha256', $salt . 'admin');
+        require_once __DIR__ . '/../Controllers/User.php';
+        $user = new User($pdo);
+        
+        // Generate a new salt and hash the password 
+        //=================================================================================
+        //remove after 
+        $salt = bin2hex(random_bytes(16));
+        $salted_password = $salt . 'admin';
+        $hashed_password = password_hash($salted_password, PASSWORD_BCRYPT);
         
         $stmt = $pdo->prepare("INSERT INTO users (username, email, password, salt, role) 
-            SELECT 'admin', 'admin@example.com', ?, ?, 'admin' 
+            SELECT 'Level Academy 1', 'levelacademy1@gmail.com', ?, ?, 'admin' 
+            WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'Level Academy 1')");
+        $stmt->execute([$hashed_password, $salt]);
+        
+        $salt = bin2hex(random_bytes(16));
+        $salted_password = $salt . 'admin';
+        $hashed_password = password_hash($salted_password, PASSWORD_BCRYPT);
+        
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password, salt, role) 
+            SELECT 'admin', 'admin@gmail.com', ?, ?, 'admin' 
             WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'admin')");
         $stmt->execute([$hashed_password, $salt]);
-        
-        $salt = '9974e364b11119f156fcf11488687199';
-        $hashed_password = hash('sha256', $salt . 'user');
-        
-        $stmt = $pdo->prepare("INSERT INTO users (username, email, password, salt, role) 
-            SELECT 'user', 'user@example.com', ?, ?, 'user' 
-            WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'user')");
-        $stmt->execute([$hashed_password, $salt]);
+
+        //=================================================================================
 
         return $pdo;
     } catch(PDOException $e) {
