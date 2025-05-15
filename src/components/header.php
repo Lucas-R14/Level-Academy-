@@ -29,7 +29,7 @@
           </div>
         </div>
         <a href="tournaments.php">Tournaments</a>
-        <a href="articles.php">Articles</a>
+        <a href="articleslist.php">Articles</a>
         <a href="insideout.php">Inside Out</a>
       </div>
     </nav>

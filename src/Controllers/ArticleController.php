@@ -136,7 +136,7 @@ class ArticleController {
     }
     
     // Get single article
-    public function get($id) {
+    public function getId($id) {
         try {
             $result = executeQuery(
                 "SELECT * FROM articles WHERE id = ?",
