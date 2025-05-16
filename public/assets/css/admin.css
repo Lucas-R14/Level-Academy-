@@ -1,0 +1,39 @@
+/* Admin pages specific styles */
+
+/* Common styles for admin images */
+.tournament-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.preview-image {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+.preview-hidden {
+    display: none;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+}
+
+.modal.active {
+    display: block;
+}
+
+/* Form elements */
+.inline-form {
+    display: inline;
+}
+
+/* Separator for article metadata */
+.meta-separator {
+    margin: 0 10px;
+} 

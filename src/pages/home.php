@@ -13,6 +13,7 @@ include '../components/header.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Level Academy - Inside Out Summer Camp 2025</title>
   <link rel="stylesheet" href="../../public/assets/style.css">
+  <link rel="stylesheet" href="../../public/assets/css/home.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Orbitron:wght@700;800&display=swap" rel="stylesheet">
 </head>
@@ -132,7 +133,7 @@ include '../components/header.php';
         </div>
       </div>
       
-      <div class="stats-container" style="margin-top: 2rem;">
+      <div class="stats-container">
         <div class="stat fade-in">
           <div class="stat-number">300+</div>
           <div class="stat-text">Hours Streamed</div>
@@ -162,7 +163,7 @@ include '../components/header.php';
             <div class="news-date">April 2025</div>
             <h3 class="news-title">Mater Boni Consilii St Joseph Paola Introduces eSports in Schools</h3>
             <p>The local school Mater Boni Consilii St Joseph Paola has signed a Memorandum of Understanding (MoU) with Level Academy, Malta's first eSports training facility.</p>
-            <a href="#" class="btn" style="padding: 0.5rem 1rem; margin-top: 1rem; font-size: 0.8rem;">Read More</a>
+            <a href="#" class="btn">Read More</a>
           </div>
         </div>
         
@@ -171,7 +172,7 @@ include '../components/header.php';
             <div class="news-date">March 2025</div>
             <h3 class="news-title">Local Legends "Thanos Kermit" Win First League of Legends LAN</h3>
             <p>The first League of Legends tournament organized by Level Academy, with its new seasonal program, 'The Gaming Malta Autumn Series', started with great success.</p>
-            <a href="#" class="btn" style="padding: 0.5rem 1rem; margin-top: 1rem; font-size: 0.8rem;">Read More</a>
+            <a href="#" class="btn">Read More</a>
           </div>
         </div>
         
@@ -180,7 +181,7 @@ include '../components/header.php';
             <div class="news-date">February 2025</div>
             <h3 class="news-title">Level Academy Announces GamingMalta Autumn Series</h3>
             <p>The local eSports organization Level Academy has just announced its competitive events calendar for the autumn months through its Facebook page.</p>
-            <a href="#" class="btn" style="padding: 0.5rem 1rem; margin-top: 1rem; font-size: 0.8rem;">Read More</a>
+            <a href="#" class="btn">Read More</a>
           </div>
         </div>
       </div>
@@ -223,7 +224,7 @@ include '../components/header.php';
   <section id="contact" class="section contact">
     <div class="container">
       <h2 class="section-title">Contact Us</h2>
-      <p style="font-size: 25px;">Contact us: info@levelacademy.com.mt</p>
+      <p>Contact us: info@levelacademy.com.mt</p>
       
       <div class="social-links">
         <a href="https://www.facebook.com/levelacademymt" target="_blank"><i class="fab fa-facebook"></i></a>
