@@ -127,10 +127,15 @@ class TournamentController {
     
     // Delete tournament
     public function delete($id) {
+
+
+        $user = new User(getPDO());
+
         // Ensure user is logged in and is admin
-        if (!isset($_SESSION['user']['id']) || $_SESSION['user']['role'] !== 'admin') {
-            http_response_code(403);
-            throw new Exception('You do not have permission to perform this action');
+        if (!$user->isLoggedIn() || !$user->isAdmin()) {
+            $_SESSION['error'] = 'You do not have permission to perform this action';
+            header('Location: login.php');
+            exit();
         }
 
 
