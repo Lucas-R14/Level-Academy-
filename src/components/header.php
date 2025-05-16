@@ -28,7 +28,7 @@
             <a href="#contact">Contact</a>
           </div>
         </div>
-        <a href="tournaments.php">Tournaments</a>
+        <a href="tournamentslist.php">Tournaments</a>
         <a href="articleslist.php">Articles</a>
         <a href="insideout.php">Inside Out</a>
       </div>
