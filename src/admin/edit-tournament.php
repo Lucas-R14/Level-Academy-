@@ -14,16 +14,11 @@ if (!$user->isLoggedIn() || !$user->isAdmin()) {
 }
 
 
-require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
+require_once '../Controllers/TournamentController.php';
 
 // Initialize TournamentController
 $tournamentController = new TournamentController(getPDO());
 
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
 
 $tournamentId = $_GET['id'];
 

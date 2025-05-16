@@ -25,14 +25,13 @@ if (!$id) {
 }
 
 // Get article data
-$articleData = $articleController->get($id);
+$articleData = $articleController->getId($id);
 if (!$articleData) {
     header('Location: articles.php');
     exit;
 }
 
 $decodedContent = html_entity_decode($articleData['content']);
-
 
 // Get all categories
 $categories = $categoryController->getAll();
