@@ -115,7 +115,7 @@ require_once 'includes/header.php';
             <label for="event_date">Event Date</label>
             <input type="date" id="event_date" name="event_date" value="<?php echo htmlspecialchars($tournament['event_date']); ?>" required class="form-control">
         </div>
-        <div class="form-group ss">
+        <div class="form-group">
             <label for="start_time ">Start Time (24-hour format)</label>
             <?php 
             // Extract just the time part from the database value (HH:MM:SS)
@@ -150,16 +150,21 @@ require_once 'includes/header.php';
         </div>
         <div class="form-group">
             <label for="tournament_image">Tournament Image</label>
-            <div class="image-upload-container">
-                <input type="file" id="tournament_image" name="tournament_image" class="form-control" accept="image/jpeg,image/png,image/gif">
+            <div class="image-upload-container" id="drop-zone">
+                <div class="drop-zone-content">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & drop your image here or click to browse</p>
+                    <input type="file" id="tournament_image" name="tournament_image" class="file-input" accept="image/jpeg,image/png,image/gif">
+                </div>
                 <?php if (!empty($tournament['image_path'])): ?>
                     <div class="current-image">
-                        <img src="/Level-Academy-/public/<?php echo htmlspecialchars($tournament['image_path']); ?>" alt="Current Image" style="max-width: 200px; max-height: 200px; object-fit: contain;">
+                        <img src="/Level-Academy-/public/<?php echo htmlspecialchars($tournament['image_path']); ?>" alt="Current Image" id="current-image-preview">
                         <p>Current Image</p>
                     </div>
                 <?php endif; ?>
-                <div id="image-preview" class="image-preview">
-                    <img id="preview-img" src="" alt="Preview" style="display: none; max-width: 200px; max-height: 200px;">
+                <div id="preview-container" class="preview-container" style="display: none;">
+                    <img id="image-preview" src="" alt="Preview">
+                    <button type="button" id="remove-image" class="btn btn-danger btn-sm">Remove</button>
                 </div>
             </div>
         </div>
@@ -198,6 +203,88 @@ require_once 'includes/header.php';
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+/* Image Upload Styles */
+.image-upload-container {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-upload-container.dragover {
+    border-color: #666;
+    background-color: #f8f9fa;
+}
+
+.drop-zone-content {
+    text-align: center;
+    color: #666;
+}
+
+.drop-zone-content i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #6c757d;
+}
+
+.drop-zone-content p {
+    margin: 10px 0;
+}
+
+.file-input {
+    display: none;
+}
+
+.preview-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.current-image {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.current-image img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
 }
 
 .form-buttons {
@@ -260,6 +347,121 @@ require_once 'includes/header.php';
     color: white;
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('tournament_image');
+    const previewContainer = document.getElementById('preview-container');
+    const imagePreview = document.getElementById('image-preview');
+    const removeButton = document.getElementById('remove-image');
+    const currentImage = document.getElementById('current-image-preview');
+    const dropZoneContent = dropZone.querySelector('.drop-zone-content');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Highlight drop zone when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle dropped files
+    dropZone.addEventListener('drop', handleDrop, false);
+    
+    // Handle click on drop zone
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Handle file selection via input
+    fileInput.addEventListener('change', handleFiles, false);
+    
+    // Handle remove image button
+    if (removeButton) {
+        removeButton.addEventListener('click', resetFileInput);
+    }
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function highlight() {
+        dropZone.classList.add('dragover');
+    }
+
+    function unhighlight() {
+        dropZone.classList.remove('dragover');
+    }
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles({ target: { files } });
+    }
+
+    function handleFiles(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Check if the file is an image
+        if (!file.type.match('image.*')) {
+            alert('Please select an image file (JPEG, PNG, or GIF)');
+            return;
+        }
+
+        // Create a preview of the image
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            previewContainer.style.display = 'block';
+            dropZoneContent.style.display = 'none';
+            
+            // Hide current image if exists
+            if (currentImage) {
+                currentImage.parentElement.style.display = 'none';
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function resetFileInput() {
+        fileInput.value = '';
+        previewContainer.style.display = 'none';
+        dropZoneContent.style.display = 'flex';
+        
+        // Show current image if exists
+        if (currentImage) {
+            currentImage.parentElement.style.display = 'block';
+        }
+    }
+
+    // Handle form submission
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        // Ensure the file input is included in the form data
+        if (fileInput.files.length > 0) {
+            // File is already attached to the input, let it submit normally
+            return true;
+        } else if (previewContainer.style.display === 'block') {
+            // If there's a preview but no file in the input (can happen with drag & drop)
+            e.preventDefault();
+            alert('Please select the image again before submitting');
+            return false;
+        }
+        // If no new image is being uploaded, let the form submit normally
+        return true;
+    });
+});
+</script>
 
 <script>
     // Image preview functionality
