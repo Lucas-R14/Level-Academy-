@@ -25,7 +25,7 @@ if (!$id) {
 }
 
 // Get article data
-$articleData = $articleController->get($id);
+$articleData = $articleController->getId($id);
 if (!$articleData) {
     header('Location: articles.php');
     exit;

@@ -4,26 +4,11 @@ require_once '../config/config.php';
 require_once '../Controllers/User.php';
 
 
-$user = new User(getPDO());
-
-// Ensure user is logged in and is admin
-if (!$user->isLoggedIn() || !$user->isAdmin()) {
-    $_SESSION['error'] = 'You do not have permission to perform this action';
-    header('Location: login.php');
-    exit();
-}
-
 
 require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
 
 // Initialize TournamentController
 $tournamentController = new TournamentController(getPDO());
-
-// Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
 
 $tournamentId = $_GET['id'];
 

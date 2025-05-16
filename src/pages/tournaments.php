@@ -14,6 +14,15 @@ function formatDate($dateString, $format) {
     return $date->format($format);
 }
 
+// Function to format time
+function formatTime($timeString) {
+    if (empty($timeString)) {
+        return 'TBA';
+    }
+    $time = new DateTime($timeString);
+    return $time->format('g:i A'); // Formats as 7:00 PM
+}
+
 // Function to get month abbreviation
 function getMonthAbbr($dateString) {
     $date = new DateTime($dateString);
@@ -256,6 +265,21 @@ include '../components/header.php';
             font-size: 0.9rem;
         }
         
+        .time-badge {
+            display: inline-flex;
+            align-items: center;
+            background: var(--quaternary);
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-right: 1rem;
+        }
+        
+        .time-badge i {
+            margin-right: 0.4rem;
+        }
+        
         @media (max-width: 1100px) {
             .tournaments-title {
                 font-size: 2.5rem;
@@ -313,12 +337,16 @@ include '../components/header.php';
                             <div class="tournament-meta">
                                 <span><i class="fas fa-gamepad"></i> <?php echo htmlspecialchars($tournament['Format']); ?></span>
                                 <span><i class="fas fa-calendar"></i> <?php echo formatDate($tournament['event_date'], 'F j, Y'); ?></span>
+                                <span><i class="fas fa-clock"></i> <?php echo formatTime($tournament['start_time']); ?></span>
                             </div>
                             <a href="tournament.php?id=<?php echo $tournament['id']; ?>" class="tournament-title"><?php echo htmlspecialchars($tournament['title']); ?></a>
                             
                             <div class="tournament-info">
                                 <div class="tournament-info-item">
                                     <i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($tournament['location']); ?>
+                                </div>
+                                <div class="tournament-info-item">
+                                    <span class="time-badge"><i class="fas fa-clock"></i> <?php echo formatTime($tournament['start_time']); ?></span>
                                 </div>
                                 <?php if (isset($tournament['prize']) && $tournament['prize']): ?>
                                     <div class="tournament-info-item">
