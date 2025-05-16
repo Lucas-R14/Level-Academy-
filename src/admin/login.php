@@ -23,7 +23,7 @@ if (!empty($_SESSION['user']['id'])) {
     try {
         $pdo = getPDO();
         $user = new User($pdo);
-        if ($user->isLoggedIn() && $user->isAdmin()) {
+        if ($user->isLoggedIn()) {
             header('Location: index.php');
             exit();
         }
@@ -50,23 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Attempt to authenticate
             if ($user->authenticate($username, $password)) {
                 // Check if user has admin role
-                if ($user->isAdmin()) {
-                    // Regenerate session ID to prevent session fixation
-                    if (session_status() === PHP_SESSION_ACTIVE) {
-                        session_regenerate_id(true);
-                    }
-                    
-                    // Set success message
-                    $_SESSION['success'] = 'Login successful. Welcome back, ' . htmlspecialchars($username) . '!';
-                    
-                    // Redirect to dashboard
-                    header('Location: index.php');
-                    exit();
-                } else {
-                    // User is not admin
-                    $error = 'You do not have admin privileges';
-                    $user->logout();
+                // Regenerate session ID to prevent session fixation
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    session_regenerate_id(true);
                 }
+                
+                // Set success message
+                $_SESSION['success'] = 'Login successful. Welcome back, ' . htmlspecialchars($username) . '!';
+                
+                // Redirect to dashboard
+                header('Location: index.php');
+                exit();
             } else {
                 // Invalid credentials
                 $error = 'Invalid username or password';

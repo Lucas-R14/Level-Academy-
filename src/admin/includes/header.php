@@ -233,6 +233,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <i class="fas fa-podcast"></i> Podcasts
                     </a>
                 </li>
+                <?php if ($user->isLoggedIn() && $user->isAdmin()): ?>
+                <li>
+                    <a href="users.php" class="<?php echo in_array($current_page, ['users.php', 'create-user.php', 'edit-user.php']) ? 'active' : ''; ?>">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

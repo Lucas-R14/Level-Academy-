@@ -7,7 +7,7 @@ require_once '../config/config.php';
 $user = new User(getPDO());
 
 // Ensure user is logged in and is admin
-if (!$user->isLoggedIn() || !$user->isAdmin()) {
+if (!$user->isLoggedIn()) {
     $_SESSION['error'] = 'You do not have permission to perform this action';
     header('Location: login.php');
     exit();
