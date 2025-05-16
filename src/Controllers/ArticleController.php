@@ -82,6 +82,18 @@ class ArticleController {
         try {
             $result = executeQuery("SELECT * FROM articles ORDER BY created_at DESC");
             if ($result['success']) {
+
+                foreach ($result['results'] as $article) {
+                    $content = $article['content'];
+                    // Substituir entidades HTML básicas primeiro
+                    $content = str_replace(['&lt;', '&gt;'], ['<', '>'], $content);
+                    $content = str_replace('&amp;', '&', $content);
+                    $content = str_replace('&nbsp;', ' ', $content);
+                    // Resolver problemas com entidades duplas (&amp;lt; etc.)
+                    $content = str_replace(['&amplt;', '&ampgt;'], ['<', '>'], $content);
+
+                    $article['content'] = $content;
+                }
                 return $result['results'];
             }
             throw new Exception($result['error']);
@@ -95,6 +107,18 @@ class ArticleController {
         try {
             $result = executeQuery("SELECT * FROM articles ORDER BY created_at DESC");
             if ($result['success']) {
+
+                foreach ($result['results'] as $article) {
+                    $content = $article['content'];
+                    // Substituir entidades HTML básicas primeiro
+                    $content = str_replace(['&lt;', '&gt;'], ['<', '>'], $content);
+                    $content = str_replace('&amp;', '&', $content);
+                    $content = str_replace('&nbsp;', ' ', $content);
+                    // Resolver problemas com entidades duplas (&amp;lt; etc.)
+                    $content = str_replace(['&amplt;', '&ampgt;'], ['<', '>'], $content);
+                    
+                    $article['content'] = $content;
+                }
                 return $result['results'];
             }
             throw new Exception($result['error']);
@@ -127,6 +151,18 @@ class ArticleController {
             );
             
             if ($result['success']) {
+
+                foreach ($result['results'] as $article) {
+                    $content = $article['content'];
+                    // Substituir entidades HTML básicas primeiro
+                    $content = str_replace(['&lt;', '&gt;'], ['<', '>'], $content);
+                    $content = str_replace('&amp;', '&', $content);
+                    $content = str_replace('&nbsp;', ' ', $content);
+                    // Resolver problemas com entidades duplas (&amp;lt; etc.)
+                    $content = str_replace(['&amplt;', '&ampgt;'], ['<', '>'], $content);
+                    
+                    $article['content'] = $content;
+                }
                 return $result['results'];
             }
             throw new Exception($result['error']);
@@ -144,7 +180,17 @@ class ArticleController {
             );
             
             if ($result['success'] && !empty($result['results'])) {
-                return $result['results'][0];
+                $article = $result['results'][0];
+                $content = $article['content'];
+                // Substituir entidades HTML básicas primeiro
+                $content = str_replace(['&lt;', '&gt;'], ['<', '>'], $content);
+                $content = str_replace('&amp;', '&', $content);
+                $content = str_replace('&nbsp;', ' ', $content);
+                // Resolver problemas com entidades duplas (&amp;lt; etc.)
+                $content = str_replace(['&amplt;', '&ampgt;'], ['<', '>'], $content);
+                
+                $article['content'] = $content;
+                return $article;
             }
             return false;
         } catch (Exception $e) {
