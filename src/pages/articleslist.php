@@ -33,6 +33,7 @@ function truncateText($text, $limit = 30) {
     return $text;
 }
 
+
 // Including the header
 include '../components/header.php';
 ?>
@@ -223,7 +224,7 @@ include '../components/header.php';
                             </div>
                             <a href="article.php?id=<?php echo $article['id']; ?>" class="article-title"><?php echo htmlspecialchars($article['title']); ?></a>
                             <div class="article-excerpt">
-                                <?php echo truncateText($article['content']); ?>
+                                <?php echo $articleController->decodeArticleContent(truncateText($article['content']));?>
                             </div>
                             <a href="article.php?id=<?php echo $article['id']; ?>" class="read-more">READ MORE</a>
                         </div>
