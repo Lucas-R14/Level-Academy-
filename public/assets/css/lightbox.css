@@ -1,0 +1,115 @@
+/* Lightbox Styles */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.lightbox-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-container {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 30px rgba(175, 4, 232, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    animation: glow 2s infinite alternate;
+}
+
+.lightbox-image {
+    display: block;
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 2px solid rgba(175, 4, 232, 0.3);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    background: rgba(175, 4, 232, 0.8);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+    box-shadow: 0 0 15px rgba(175, 4, 232, 0.7);
+}
+
+.lightbox-close:hover {
+    background: rgba(175, 4, 232, 1);
+    transform: scale(1.1);
+}
+
+/* Zoom in effect */
+.tournament-image img, .tournament-featured-image img {
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.tournament-image img:hover, .tournament-featured-image img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* Adds a subtle indicator that images are clickable */
+.tournament-image::after, .tournament-featured-image::after {
+    content: '\f00e';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(175, 4, 232, 0.7);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.tournament-image:hover::after, .tournament-featured-image:hover::after {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Make container position relative for the zoom icon positioning */
+.tournament-image, .tournament-featured-image {
+    position: relative;
+}
+
+/* Animation for the lightbox glow effect */
+@keyframes glow {
+    from {
+        box-shadow: 0 0 15px rgba(175, 4, 232, 0.5);
+    }
+    to {
+        box-shadow: 0 0 30px rgba(175, 4, 232, 0.8);
+    }
+} 

@@ -58,6 +58,7 @@ include '../components/header.php';
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../public/assets/style.css">
     <link rel="stylesheet" href="../../public/assets/css/tournaments.css">
+    <link rel="stylesheet" href="../../public/assets/css/lightbox.css">
     <link rel="stylesheet" href="../../public/assets/sidebar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -86,6 +87,12 @@ include '../components/header.php';
                             <div class="tournament-date-month"><?php echo getMonthAbbr($tournament['event_date']); ?></div>
                         </div>
                         <div class="tournament-content-wrap">
+                            <?php if (!empty($tournament['image_path'])): ?>
+                                <div class="tournament-image">
+                                    <img src="../../public/<?php echo htmlspecialchars($tournament['image_path']); ?>" alt="<?php echo htmlspecialchars($tournament['title']); ?>">
+                                </div>
+                            <?php endif; ?>
+                            
                             <div class="tournament-meta">
                                 <span><i class="fas fa-gamepad"></i> <?php echo htmlspecialchars($tournament['Format']); ?></span>
                                 <span><i class="fas fa-calendar"></i> <?php echo formatDate($tournament['event_date'], 'F j, Y'); ?></span>
@@ -121,10 +128,11 @@ include '../components/header.php';
     </div>
 
     <script src="../../public/assets/script.js"></script>
+    <script src="../../public/assets/js/lightbox.js"></script>
 
 <?php
 // Including the footer
 include '../components/footer.php';
 ?>
 </body>
-</html>
+</html> 
