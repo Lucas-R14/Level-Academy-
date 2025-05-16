@@ -51,6 +51,7 @@ require_once 'includes/header.php';
                 <th>Title</th>
                 <th>Format</th>
                 <th>Event Date</th>
+                <th>Start Time</th>
                 <th>Location</th>
                 <th>Prize</th>
                 <th>Entry Fee</th>
@@ -60,7 +61,7 @@ require_once 'includes/header.php';
         <tbody>
             <?php if (empty($tournaments)): ?>
                 <tr>
-                    <td colspan="7">No tournaments found.</td>
+                    <td colspan="8">No tournaments found.</td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($tournaments as $tournament): ?>
@@ -75,6 +76,7 @@ require_once 'includes/header.php';
                     <td><?php echo htmlspecialchars($tournament['title']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['Format']); ?></td>
                     <td><?php echo htmlspecialchars($tournament['event_date']); ?></td>
+                    <td><?php echo !empty($tournament['start_time']) ? date('H:i', strtotime($tournament['start_time'])) : 'N/A'; ?></td>
                     <td><?php echo htmlspecialchars($tournament['location']); ?></td>
                     <td><?php echo $tournament['prize'] == 1 ? 'Available' : 'Unavailable'; ?></td>
                     <td><?php echo htmlspecialchars($tournament['entry_fee']); ?></td>
