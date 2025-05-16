@@ -33,7 +33,6 @@ if (!$articleData) {
 
 $decodedContent = html_entity_decode($articleData['content']);
 
-
 // Get all categories
 $categories = $categoryController->getAll();
 

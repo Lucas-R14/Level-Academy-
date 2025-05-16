@@ -2,6 +2,7 @@
 session_start();
 require_once '../config/config.php';
 require_once '../Controllers/User.php';
+require_once '../Controllers/TournamentController.php';
 
 $user = new User(getPDO());
 

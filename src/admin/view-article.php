@@ -21,7 +21,7 @@ $articleId = $_GET['id'];
 
 // Get article data
 try {
-    $article = $articleController->get($articleId);
+    $article = $articleController->getId($articleId);
     if (!$article) {
         header('Location: articles.php?error=Article not found');
         exit;

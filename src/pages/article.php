@@ -247,7 +247,11 @@ foreach ($categories as $cat) {
     <div class="article-main-wrapper">
         <section class="article-content-section">
             <div class="article-content">
-                <?php echo $article['content']; ?>
+                <?php 
+                // Decode HTML entities and ensure proper line breaks
+                $content = html_entity_decode($article['content'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                echo $content;
+                ?>
             </div>
             
             <div class="article-share">

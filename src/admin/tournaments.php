@@ -12,7 +12,7 @@ if (!$user->isLoggedIn() || !$user->isAdmin()) {
     exit();
 }
 
-require_once dirname(__FILE__) . '/../Controllers/TournamentController.php';
+require_once '../Controllers/TournamentController.php';
 
 // Initialize TournamentController
 $tournamentController = new TournamentController(getPDO());
