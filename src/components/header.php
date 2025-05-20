@@ -31,14 +31,8 @@
         <div class="dropdown">
           <a href="tournamentslist.php" class="dropbtn">Tournaments</a>
           <div class="dropdown-content tournament-dropdown">
-            <a href="tournamentslist.php?category=league-of-legends">League of Legends</a>
-            <a href="tournamentslist.php?category=valorant">Valorant</a>
-            <a href="tournamentslist.php?category=csgo">CS:GO</a>
-            <a href="tournamentslist.php?category=fortnite">Fortnite</a>
-            <a href="tournamentslist.php?category=rocket-league">Rocket League</a>
-            <a href="tournamentslist.php?category=fifa">FIFA</a>
-            <a href="tournamentslist.php?category=smash-bros">Smash Bros</a>
-            <a href="tournamentslist.php?category=other">Other Games</a>
+            <a href="tournamentslist.php">All Tournaments</a>
+            <a href="summercamp.php">Inside / Out Summer Camp</a>
           </div>
         </div>
         <a href="articleslist.php">Articles</a>
