@@ -6,7 +6,7 @@ require_once '../Controllers/User.php';
 $user = new User(getPDO());
 
 // Ensure user is logged in and is admin
-if (!$user->isLoggedIn() || !$user->isAdmin()) {
+if (!$user->isLoggedIn()) {
     $_SESSION['error'] = 'You do not have permission to perform this action';
     header('Location: login.php');
     exit();
@@ -27,7 +27,9 @@ require_once 'includes/header.php';
 <div class="content-header">
     <h2>Tournaments Management</h2>
     <div class="actions">
+        <?php if ($user->isAdmin()): ?>
         <a href="add-tournament.php" class="btn btn-primary">Create New Tournament</a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -81,6 +83,7 @@ require_once 'includes/header.php';
                     <td><?php echo $tournament['prize'] == 1 ? 'Available' : 'Unavailable'; ?></td>
                     <td><?php echo htmlspecialchars($tournament['entry_fee']); ?></td>
                     <td class="actions-cell">
+                        <?php if ($user->isAdmin()): ?>
                         <a href="edit-tournament.php?id=<?php echo htmlspecialchars($tournament['id']); ?>" class="btn btn-edit" title="Edit Tournament">
                             <i class="fas fa-edit"></i> Edit
                         </a>
@@ -90,6 +93,9 @@ require_once 'includes/header.php';
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </form>
+                        <?php else: ?>
+                        <span class="text-muted">No actions available</span>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
