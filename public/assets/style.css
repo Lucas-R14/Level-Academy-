@@ -56,6 +56,8 @@ nav {
   color: transparent;
   text-transform: uppercase;
   animation: gradient-shift 4s ease infinite;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .menu {
@@ -109,6 +111,13 @@ nav {
   overflow: hidden;
 }
 
+/* Tournament dropdown specific styles */
+.dropdown-content.tournament-dropdown {
+  min-width: 200px;
+  background: linear-gradient(to bottom, #222, #1a1a1a);
+  border: 1px solid rgba(175, 4, 232, 0.3);
+}
+
 .dropdown-content a {
   color: var(--light);
   padding: 12px 16px;
@@ -135,6 +144,63 @@ nav {
 
 .dropdown:hover > .dropbtn {
   color: var(--primary);
+}
+
+/* Add game icons to tournament categories */
+.dropdown-content a[href*="league-of-legends"]::before {
+  content: '\f1b3';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.dropdown-content a[href*="valorant"]::before {
+  content: '\f11b';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.dropdown-content a[href*="csgo"]::before {
+  content: '\f11b';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.dropdown-content a[href*="fortnite"]::before {
+  content: '\f11b';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.dropdown-content a[href*="rocket-league"]::before {
+  content: '\f1e3';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.dropdown-content a[href*="fifa"]::before {
+  content: '\f1e3';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.dropdown-content a[href*="smash-bros"]::before {
+  content: '\f11b';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.dropdown-content a[href*="other"]::before {
+  content: '\f11b';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  margin-right: 8px;
 }
 
 .hero {

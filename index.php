@@ -36,7 +36,7 @@
     <div class="page-transition active">
       <div class="cyber-grid"></div>
       <div class="transition-content">
-        <div class="logo">Level Academy</div>
+        <a href="src/pages/home.php" class="logo">Level Academy</a>
         <div class="loading-container">
           <div class="loading-spinner">
             <div class="spinner-circle"></div>

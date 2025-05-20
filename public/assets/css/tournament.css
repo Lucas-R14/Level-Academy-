@@ -62,6 +62,8 @@
     flex: 1;
     max-width: 900px;
     margin-top: 2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .tournament-content {
@@ -73,10 +75,14 @@
     margin-bottom: 2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(175, 4, 232, 0.2);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .tournament-details {
     margin-bottom: 2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .tournament-details h3 {
@@ -88,6 +94,7 @@
 
 .tournament-details p {
     margin-bottom: 1rem;
+    max-width: 100%;
 }
 
 .tournament-details ul {
@@ -97,6 +104,7 @@
 
 .tournament-details li {
     margin-bottom: 0.5rem;
+    max-width: 100%;
 }
 
 .tournament-info-block {
