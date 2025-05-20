@@ -56,6 +56,10 @@
     margin: 0 auto;
     min-height: 80vh;
     padding: 0 15px;
+    /* background: linear-gradient(120deg, #1a1a2e 0%, #23234b 100%); */
+    /* border-radius: 18px; */
+    /* box-shadow: 0 8px 32px rgba(175,4,232,0.08); */
+    /* padding-bottom: 2rem; */
 }
 
 .tournaments-section {
@@ -284,10 +288,10 @@
 }
 .camp-sections-grid .camp-section {
     flex: 1 1 0;
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.10);
     border-radius: 12px;
     padding: 2rem 1.5rem;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -306,6 +310,35 @@
     margin-bottom: 1.2rem;
     text-align: center;
 }
+.camp-sections-grid .camp-box {
+    margin-bottom: 0;
+}
+.camp-sections-grid .camp-section {
+    background: rgba(255,255,255,0.10);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+}
+.camp-box .feature i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+.camp-box.accent-esports .feature i {
+    color: #AF04E8;
+    text-shadow: 0 0 8px #AF04E844;
+}
+.camp-box.accent-game .feature i {
+    color: #FF7B02;
+    text-shadow: 0 0 8px #FF7B0244;
+}
+.camp-box.accent-physical .feature i {
+    color: #00C9FF;
+    text-shadow: 0 0 8px #00C9FF44;
+}
+.camp-box .feature:hover i {
+    color: #fff;
+    text-shadow: 0 0 16px #fff, 0 0 8px #AF04E8;
+}
 @media (max-width: 1100px) {
     .camp-sections-grid {
         flex-direction: column;
@@ -313,5 +346,61 @@
     }
     .camp-sections-grid .camp-section {
         padding: 1.5rem 1rem;
+    }
+}
+
+.camp-box {
+    background: rgba(255,255,255,0.06);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 2rem 2rem 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+    transition: box-shadow 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.camp-box .accent-bar {
+    height: 7px;
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.camp-box.accent-esports .accent-bar {
+    background: linear-gradient(90deg, #AF04E8 0%, #04E8D4 100%);
+}
+.camp-box.accent-game .accent-bar {
+    background: linear-gradient(90deg, #FF7B02 0%, #FFD600 100%);
+}
+.camp-box.accent-physical .accent-bar {
+    background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
+}
+.camp-box:hover {
+    box-shadow: 0 8px 32px rgba(175,4,232,0.25);
+    transform: translateY(-4px) scale(1.02);
+}
+.camp-box h2 {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    color: var(--primary-color);
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+.camp-box ul {
+    margin: 1.2rem 0 0 1.2rem;
+    padding: 0;
+    color: #fff;
+    font-size: 1.1rem;
+}
+.camp-box p, .camp-box li {
+    color: #fff;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+@media (max-width: 1100px) {
+    .camp-box {
+        padding: 1.2rem 0.7rem 1.2rem 0.7rem;
     }
 } 
