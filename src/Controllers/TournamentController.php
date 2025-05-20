@@ -65,6 +65,26 @@ class TournamentController {
         }
     }
     
+    // Get tournaments by category
+    public function getByCategory($category) {
+        try {
+            // Filter tournaments based on their title or format
+            $result = executeQuery(
+                "SELECT * FROM tournaments 
+                WHERE LOWER(title) LIKE :category 
+                OR LOWER(Format) LIKE :category 
+                ORDER BY event_date DESC",
+                [':category' => '%' . strtolower($category) . '%']
+            );
+            if ($result['success']) {
+                return $result['results'];
+            }
+            throw new Exception($result['error']);
+        } catch (Exception $e) {
+            throw new Exception("Error fetching tournaments by category: " . $e->getMessage());
+        }
+    }
+    
     // Get single tournament
     public function get($id) {
         try {
@@ -127,8 +147,6 @@ class TournamentController {
     
     // Delete tournament
     public function delete($id) {
-
-
         $user = new User(getPDO());
 
         // Ensure user is logged in and is admin
@@ -137,7 +155,6 @@ class TournamentController {
             header('Location: login.php');
             exit();
         }
-
 
         try {
             $result = executeQuery("DELETE FROM tournaments WHERE id = :id", [':id' => $id]);

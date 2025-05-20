@@ -6,7 +6,7 @@ require_once '../Controllers/User.php';
 $user = new User(getPDO());
 
 // Ensure user is logged in and is admin
-if (!$user->isLoggedIn() || !$user->isAdmin()) {
+if (!$user->isLoggedIn()) {
     $_SESSION['error'] = 'You do not have permission to perform this action';
     header('Location: login.php');
     exit();
@@ -47,7 +47,9 @@ require_once 'includes/header.php';
 <div class="content-header">
     <h2>Articles Management</h2>
     <div class="actions">
+        <?php if ($user->isAdmin()): ?>
         <a href="add-article.php" class="btn btn-primary">Create New Article</a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -71,12 +73,14 @@ require_once 'includes/header.php';
                 <a href="view-article.php?id=<?php echo $article['id']; ?>" class="btn btn-view" title="View Article">
                     <i class="fas fa-eye"></i> View
                 </a>
+                <?php if ($user->isAdmin()): ?>
                 <a href="edit-article.php?id=<?php echo $article['id']; ?>" class="btn btn-primary" title="Edit Article">
                     <i class="fas fa-edit"></i> Edit
                 </a>
                 <a href="delete-article.php?id=<?php echo $article['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this article?')" title="Delete Article">
                     <i class="fas fa-trash"></i> Delete
                 </a>
+                <?php endif; ?>
             </div>
             <style>
                 .btn-view {

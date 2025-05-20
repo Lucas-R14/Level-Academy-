@@ -98,7 +98,9 @@
 }
 
 .article-content-wrap {
-    width: 100%;
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .article-title {
@@ -109,6 +111,8 @@
     text-decoration: none;
     transition: color 0.2s;
     display: block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .article-title:hover {
@@ -120,6 +124,8 @@
     font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 1.2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .read-more {

@@ -6,7 +6,7 @@ require_once '../Controllers/User.php';
 $user = new User(getPDO());
 
 // Ensure user is logged in and is admin
-if (!$user->isLoggedIn() || !$user->isAdmin()) {
+if (!$user->isLoggedIn()) {
     $_SESSION['error'] = 'You do not have permission to perform this action';
     header('Location: login.php');
     exit();
@@ -58,7 +58,9 @@ $categories = $categoryController->getAll();
 <div class="content-header">
     <h2>Categories Management</h2>
     <div class="actions">
+        <?php if ($user->isAdmin()): ?>
         <button class="btn btn-primary" onclick="openAddModal()">Add New Category</button>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -144,6 +146,7 @@ $categories = $categoryController->getAll();
                     <td><?php echo htmlspecialchars($category['id']); ?></td>
                     <td><?php echo htmlspecialchars($category['name']); ?></td>
                     <td class="actions-cell">
+                        <?php if ($user->isAdmin()): ?>
                         <button class="btn btn-edit" onclick="openEditModal(<?php echo htmlspecialchars(json_encode($category)); ?>)" title="Edit Category">
                             <i class="fas fa-edit"></i> Edit
                         </button>
@@ -154,6 +157,9 @@ $categories = $categoryController->getAll();
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </form>
+                        <?php else: ?>
+                        <span class="text-muted">No actions available</span>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

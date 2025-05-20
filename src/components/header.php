@@ -15,7 +15,7 @@
 <header>
   <div class="container">
     <nav>
-      <div class="logo">Level Academy</div>
+      <a href="../../index.php" class="logo">Level Academy</a>
       <div class="menu">
         <div class="dropdown">
           <a href="../../index.php" class="dropbtn">Home</a>
@@ -28,7 +28,19 @@
             <a href="#contact">Contact</a>
           </div>
         </div>
-        <a href="tournamentslist.php">Tournaments</a>
+        <div class="dropdown">
+          <a href="tournamentslist.php" class="dropbtn">Tournaments</a>
+          <div class="dropdown-content tournament-dropdown">
+            <a href="tournamentslist.php?category=league-of-legends">League of Legends</a>
+            <a href="tournamentslist.php?category=valorant">Valorant</a>
+            <a href="tournamentslist.php?category=csgo">CS:GO</a>
+            <a href="tournamentslist.php?category=fortnite">Fortnite</a>
+            <a href="tournamentslist.php?category=rocket-league">Rocket League</a>
+            <a href="tournamentslist.php?category=fifa">FIFA</a>
+            <a href="tournamentslist.php?category=smash-bros">Smash Bros</a>
+            <a href="tournamentslist.php?category=other">Other Games</a>
+          </div>
+        </div>
         <a href="articleslist.php">Articles</a>
         <a href="insideout.php">Inside Out</a>
       </div>

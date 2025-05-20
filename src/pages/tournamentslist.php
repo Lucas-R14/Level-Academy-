@@ -57,7 +57,7 @@ include '../components/header.php';
     <title>Tournaments - Level Academy</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../public/assets/style.css">
-    <link rel="stylesheet" href="../../public/assets/css/tournaments.css">
+    <link rel="stylesheet" href="../../public/assets/css/tournamentslist.css">
     <link rel="stylesheet" href="../../public/assets/css/lightbox.css">
     <link rel="stylesheet" href="../../public/assets/sidebar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">

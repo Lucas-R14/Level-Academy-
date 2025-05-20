@@ -9,8 +9,10 @@ require_once __DIR__ . '/../Controllers/ArticleController.php';
 require_once __DIR__ . '/../Controllers/PodcastController.php';
 require_once __DIR__ . '/../Controllers/TournamentController.php';
 
-// Ensure user is logged in and is admin
-if (!isset($_SESSION['user']['id']) || $_SESSION['user']['role'] !== 'admin') {
+// Initialize User
+$user = new User(getPDO());
+
+if (!$user->isLoggedIn()) {
     $_SESSION['error'] = 'You do not have permission to access this page';
     header('Location: login.php');
     exit();
@@ -83,9 +85,11 @@ try {
             echo '</div>';
             echo '<div class="article-actions">';
             echo '<a href="view-article.php?id=' . $article['id'] . '" target="_blank" class="btn btn-view" title="View Article"><i class="fas fa-eye"></i> View</a>';
-            echo '<a href="edit-article.php?id=' . $article['id'] . '" class="btn btn-edit" title="Edit Article"><i class="fas fa-edit"></i> Edit</a>';
-            echo '<a href="delete-article.php?id=' . $article['id'] . '" class="btn btn-delete" onclick="return confirm(\'Are you sure you want to delete this article?\')" title="Delete Article">';
-            echo '<i class="fas fa-trash"></i> Delete</a>';
+            if ($user->isAdmin()) {
+                echo '<a href="edit-article.php?id=' . $article['id'] . '" class="btn btn-edit" title="Edit Article"><i class="fas fa-edit"></i> Edit</a>';
+                echo '<a href="delete-article.php?id=' . $article['id'] . '" class="btn btn-delete" onclick="return confirm(\'Are you sure you want to delete this article?\')" title="Delete Article">';
+                echo '<i class="fas fa-trash"></i> Delete</a>';
+            }
             echo '</div>';
             echo '</div>';
         }
@@ -107,9 +111,11 @@ try {
             echo '<span><i class="fas fa-calendar"></i> ' . date('F j, Y', strtotime($podcast['created_at'])) . '</span>';
             echo '</div>';
             echo '<div class="podcast-actions">';
-            echo '<a href="edit-podcast.php?id=' . $podcast['id'] . '" class="btn btn-edit" title="Edit Podcast"><i class="fas fa-edit"></i> Edit</a>';
-            echo '<a href="delete-podcast.php?id=' . $podcast['id'] . '" class="btn btn-delete" onclick="return confirm(\'Are you sure you want to delete this podcast?\')" title="Delete Podcast">';
-            echo '<i class="fas fa-trash"></i> Delete</a>';
+            if ($user->isAdmin()) {
+                echo '<a href="edit-podcast.php?id=' . $podcast['id'] . '" class="btn btn-edit" title="Edit Podcast"><i class="fas fa-edit"></i> Edit</a>';
+                echo '<a href="delete-podcast.php?id=' . $podcast['id'] . '" class="btn btn-delete" onclick="return confirm(\'Are you sure you want to delete this podcast?\')" title="Delete Podcast">';
+                echo '<i class="fas fa-trash"></i> Delete</a>';
+            }
             echo '</div>';
             echo '</div>';
         }
@@ -132,9 +138,11 @@ try {
             echo '<span><i class="fas fa-map-marker-alt"></i> ' . htmlspecialchars($tournament['location']) . '</span>';
             echo '</div>';
             echo '<div class="tournament-actions">';
-            echo '<a href="edit-tournament.php?id=' . $tournament['id'] . '" class="btn btn-edit" title="Edit Tournament"><i class="fas fa-edit"></i> Edit</a>';
-            echo '<a href="delete-tournament.php?id=' . $tournament['id'] . '" class="btn btn-delete" onclick="return confirm(\'Are you sure you want to delete this tournament?\')" title="Delete Tournament">';
-            echo '<i class="fas fa-trash"></i> Delete</a>';
+            if ($user->isAdmin()) {
+                echo '<a href="edit-tournament.php?id=' . $tournament['id'] . '" class="btn btn-edit" title="Edit Tournament"><i class="fas fa-edit"></i> Edit</a>';
+                echo '<a href="delete-tournament.php?id=' . $tournament['id'] . '" class="btn btn-delete" onclick="return confirm(\'Are you sure you want to delete this tournament?\')" title="Delete Tournament">';
+                echo '<i class="fas fa-trash"></i> Delete</a>';
+            }
             echo '</div>';
             echo '</div>';
         }

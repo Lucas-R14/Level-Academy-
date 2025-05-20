@@ -33,7 +33,6 @@ function truncateText($text, $limit = 30) {
     return $text;
 }
 
-
 // Including the header
 include '../components/header.php';
 ?>
@@ -91,7 +90,11 @@ include '../components/header.php';
                             </div>
                             <a href="article.php?id=<?php echo $article['id']; ?>" class="article-title"><?php echo htmlspecialchars($article['title']); ?></a>
                             <div class="article-excerpt">
-                                <?php echo $articleController->decodeArticleContent(truncateText($article['content']));?>
+                                <?php 
+                                    $decodedContent = $articleController->decodeArticleContent($article['content']);
+                                    $plainText = strip_tags($decodedContent);
+                                    echo substr($plainText, 0, 300) . (strlen($plainText) > 300 ? '...' : '');
+                                ?>
                             </div>
                             <a href="article.php?id=<?php echo $article['id']; ?>" class="read-more">READ MORE</a>
                         </div>
