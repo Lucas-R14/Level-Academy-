@@ -58,10 +58,18 @@
     color: var(--primary);
 }
 
+.tournaments-main-wrapper {
+    display: flex;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
 .tournament-content-section {
     flex: 1;
     max-width: 900px;
-    margin-top: 2rem;
+    margin: 2rem 0;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }

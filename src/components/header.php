@@ -34,6 +34,8 @@
           <div class="dropdown-content tournament-dropdown">
             <a href="tournamentslist.php">All Tournaments</a>
             <a href="summercamp.php">Inside / Out Summer Camp</a>
+            <a href="photography.php">Photography for Kids</a>
+            <a href="birthday.php">Birthday Parties</a>
           </div>
         </div>
         <a href="articleslist.php">Articles</a>
