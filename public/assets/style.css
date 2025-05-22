@@ -103,19 +103,36 @@ nav {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #222;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
-  z-index: 1001;
-  border-radius: 0 0 8px 8px;
-  overflow: hidden;
+  background-color: #000000;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
 }
 
 /* Tournament dropdown specific styles */
-.dropdown-content.tournament-dropdown {
-  min-width: 200px;
-  background: linear-gradient(to bottom, #222, #1a1a1a);
-  border: 1px solid rgba(175, 4, 232, 0.3);
+.tournament-dropdown {
+  max-height: calc(4 * 45px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #AF04E8 #000000;
+  white-space: nowrap;
+}
+
+.tournament-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tournament-dropdown::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.tournament-dropdown::-webkit-scrollbar-thumb {
+  background-color: #AF04E8;
+  border-radius: 4px;
+}
+
+.tournament-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: #8a03c0;
 }
 
 .dropdown-content a {
@@ -123,10 +140,12 @@ nav {
   padding: 12px 16px;
   text-decoration: none;
   display: block;
-  font-size: 0.95rem;
   border-bottom: 1px solid rgba(175, 4, 232, 0.1);
-  background: #222;
-  transition: background 0.2s;
+  height: 45px;
+  line-height: 21px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dropdown-content a:last-child {
@@ -146,62 +165,6 @@ nav {
   color: var(--primary);
 }
 
-/* Add game icons to tournament categories */
-.dropdown-content a[href*="league-of-legends"]::before {
-  content: '\f1b3';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-.dropdown-content a[href*="valorant"]::before {
-  content: '\f11b';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-.dropdown-content a[href*="csgo"]::before {
-  content: '\f11b';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-.dropdown-content a[href*="fortnite"]::before {
-  content: '\f11b';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-.dropdown-content a[href*="rocket-league"]::before {
-  content: '\f1e3';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-.dropdown-content a[href*="fifa"]::before {
-  content: '\f1e3';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-.dropdown-content a[href*="smash-bros"]::before {
-  content: '\f11b';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-.dropdown-content a[href*="other"]::before {
-  content: '\f11b';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  margin-right: 8px;
-}
 
 .hero {
   height: 100vh;
