@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['action']) && $_POST['action'] === 'delete' && isset($_POST['id'])) {
             $podcastController->delete($_POST['id']);
             header('Location: podcasts.php?success=Podcast deleted successfully!');
-            exit;
+            exit();
         }
     } catch (Exception $e) {
         $error = $e->getMessage();

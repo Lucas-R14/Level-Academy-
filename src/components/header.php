@@ -36,6 +36,8 @@
             <a href="summercamp.php">Inside / Out Summer Camp</a>
             <a href="photography.php">Photography for Kids</a>
             <a href="birthday.php">Birthday Parties</a>
+            <a href="music.php">Music Production for Kids</a>
+            <a href="game.php">Game Creation</a>
           </div>
         </div>
         <a href="articleslist.php">Articles</a>
