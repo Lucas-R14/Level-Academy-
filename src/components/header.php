@@ -38,6 +38,7 @@
             <a href="birthday.php">Birthday Parties</a>
             <a href="music.php">Music Production for Kids</a>
             <a href="game.php">Game Creation</a>
+            <a href="sounddesignforgames.php">Sound Design for Games</a>
           </div>
         </div>
         <a href="articleslist.php">Articles</a>
