@@ -79,21 +79,6 @@ include '../components/header.php';
                             <li>Created lasting memories and friendships with fellow participants who share their passion for gaming and personal growth</li>
                         </ul>
                     </div>
-
-                    <div class="camp-box camp-section">
-                        <h2>Schedule Options</h2>
-                        <div class="schedule-options">
-                            <div class="option">
-                                <h3>Morning Program (Ages 10-15)</h3>
-                                <p>9:00 AM - 1:00 PM</p>
-                            </div>
-                            <div class="option">
-                                <h3>Afternoon Program (Ages 15+)</h3>
-                                <p>2:00 PM - 6:00 PM</p>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="camp-box camp-section">
                         <h2>Target Group and Eligibility</h2>
                         <p>This programme is aimed at individuals who share a passion for video games yet have little to no experience at a competitive level. Join Level Academy Malta's Inside/Out Summer Esports Bootcamp to embark on an unforgettable journey that combines the excitement of Esports, the creativity of game development, and the camaraderie of outdoor physical activities. Don't miss out on this one-of-a-kind summer camp experience – sign up today at the button below!</p>

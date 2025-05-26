@@ -39,6 +39,7 @@
             <a href="music.php">Music Production for Kids</a>
             <a href="game.php">Game Creation</a>
             <a href="sounddesignforgames.php">Sound Design for Games</a>
+            <a href="contentcreation.php">Content Creation</a>
           </div>
         </div>
         <a href="articleslist.php">Articles</a>
