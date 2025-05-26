@@ -24,11 +24,6 @@ include '../components/header.php';
         <section class="tournaments-section">
             <div class="tournament-item">
                 <div class="tournament-content-wrap">
-                    <div class="camp-buttons">
-                        <a href="https://bit.ly/insideout23brochure" target="_blank" class="register-btn">Brochure</a>
-                        <a href="https://forms.gle/tPcx26Vzr9B3R2zi8" target="_blank" class="register-btn">Register Here</a>
-                        <a href="https://docs.google.com/document/d/1_DVKJNi3WZHZueB0-3MHaULDVKRWeMHrgK2sURi__5s/edit?usp=sharing" target="_blank" class="register-btn">Facts and Fees</a>
-                    </div>
 
                     <div class="camp-section">
                         <h2>Program Overview</h2>
@@ -86,24 +81,6 @@ include '../components/header.php';
                     </div>
 
                     <div class="camp-box camp-section">
-                        <h2>Programme Details</h2>
-                        <div class="program-details">
-                            <p><strong>Programme Duration:</strong> 8 Weeks</p>
-                            <p><strong>Sessions:</strong> 3 sessions per week (Tuesday, Wednesday, Thursday)</p>
-                            <p><strong>Session Duration:</strong> 4 Hours</p>
-                            <p><strong>Start Date:</strong> 11th July 2023</p>
-                            <p><strong>End Date:</strong> 7th September 2023</p>
-                            <p><strong>Price:</strong> €450</p>
-                            <p><strong>Note:</strong> No classes during the week starting 14th August</p>
-                        </div>
-                        <div class="program-details">
-                            <p><strong>Venue:</strong> Esports Sessions and Game Creation at Level Academy, 5 triq K. Galea, Birkirkara</p>
-                            <p><strong>Sports Sessions:</strong> Various venues</p>
-                            <p><strong>Transport:</strong> Included for outings and off-site visits</p>
-                        </div>
-                    </div>
-
-                    <div class="camp-box camp-section">
                         <h2>Schedule Options</h2>
                         <div class="schedule-options">
                             <div class="option">
@@ -121,10 +98,105 @@ include '../components/header.php';
                         <h2>Target Group and Eligibility</h2>
                         <p>This programme is aimed at individuals who share a passion for video games yet have little to no experience at a competitive level. Join Level Academy Malta's Inside/Out Summer Esports Bootcamp to embark on an unforgettable journey that combines the excitement of Esports, the creativity of game development, and the camaraderie of outdoor physical activities. Don't miss out on this one-of-a-kind summer camp experience – sign up today at the button below!</p>
                     </div>
+                    <div class="camp-box camp-section email-section">
+                        <div class="email-container">
+                            <div class="email-icon">
+                                <i class="fas fa-campground"></i>
+                            </div>
+                            <div class="email-content">
+                                <h2>Join Our Summer Adventure</h2>
+                                <p>Ready to enroll or have questions about our summer camp? Get in touch with us today!</p>
+                                <div class="email-button">
+                                    <a href="mailto:spiterik@gmail.com" class="email-link">
+                                        <i class="fas fa-paper-plane"></i> Email Us at spiterik@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
+
+    <style>
+        .email-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .email-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .email-icon {
+            font-size: 3rem;
+            color: #6c5ce7;
+            margin-bottom: 10px;
+        }
+        
+        .email-content h2 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .email-content p {
+            color: #636e72;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .email-button {
+            margin-top: 15px;
+        }
+        
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #6c5ce7;
+            color: white !important;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .email-link:hover {
+            background: #5649c0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        
+        .email-link i {
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .email-section {
+                padding: 20px 15px;
+            }
+            
+            .email-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .email-link {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
 
 <?php
 // Including the footer

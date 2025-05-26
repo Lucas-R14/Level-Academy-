@@ -24,9 +24,6 @@ include '../components/header.php';
         <section class="tournaments-section">
             <div class="tournament-item">
                 <div class="tournament-content-wrap">
-                    <div class="camp-buttons">
-                        <a href="https://forms.gle/kaYh67dP6pPfPE5r6" target="_blank" class="register-btn">Apply Now</a>
-                    </div>
 
                     <div class="camp-section">
                         <h2>Course Overview</h2>
@@ -68,26 +65,108 @@ include '../components/header.php';
                     </div>
 
                     <div class="camp-box camp-section">
-                        <h2>Course Details</h2>
-                        <div class="program-details">
-                            <p><strong>Start Date:</strong> 18th April 2023</p>
-                            <p><strong>End Date:</strong> 20th June 2023</p>
-                            <p><strong>Sessions:</strong> 10 sessions</p>
-                            <p><strong>Session Duration:</strong> 2 Hours</p>
-                            <p><strong>Schedule:</strong> Mondays 17:00-19:00</p>
-                            <p><strong>Age Requirement:</strong> 13-18</p>
-                            <p><strong>Price:</strong> €250</p>
-                        </div>
-                    </div>
-
-                    <div class="camp-box camp-section">
                         <h2>Target Group</h2>
                         <p>This course is perfect for young aspiring sound designers who want to learn how to create immersive audio experiences for video games. No prior sound design experience is required - just bring your enthusiasm and creativity!</p>
+                    </div>
+                    <div class="camp-box camp-section email-section">
+                        <div class="email-container">
+                            <div class="email-icon">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
+                            <div class="email-content">
+                                <h2>Create Immersive Soundscapes</h2>
+                                <p>Questions about our sound design course? We'd love to hear from you!</p>
+                                <div class="email-button">
+                                    <a href="mailto:spiterik@gmail.com" class="email-link">
+                                        <i class="fas fa-paper-plane"></i> Email Us at spiterik@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
+
+    <style>
+        .email-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .email-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .email-icon {
+            font-size: 3rem;
+            color: #6c5ce7;
+            margin-bottom: 10px;
+        }
+        
+        .email-content h2 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .email-content p {
+            color: #636e72;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .email-button {
+            margin-top: 15px;
+        }
+        
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #6c5ce7;
+            color: white !important;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .email-link:hover {
+            background: #5649c0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        
+        .email-link i {
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .email-section {
+                padding: 20px 15px;
+            }
+            
+            .email-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .email-link {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
 
 <?php
 // Including the footer

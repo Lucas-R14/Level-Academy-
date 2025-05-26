@@ -24,9 +24,7 @@ include '../components/header.php';
         <section class="tournaments-section">
             <div class="tournament-item">
                 <div class="tournament-content-wrap">
-                    <div class="camp-buttons">
-                        <a href="https://docs.google.com/forms/d/e/1FAIpQLScp9-lTSJn4AfW44EDPFzKk-0XkgoqBNG6IduCOPkxzLva9Vw/viewform?usp=sf_link" target="_blank" class="register-btn">Apply Now</a>
-                    </div>
+
 
                     <div class="camp-section">
                         <h2>Course Overview</h2>
@@ -66,19 +64,6 @@ include '../components/header.php';
                     </div>
 
                     <div class="camp-box camp-section">
-                        <h2>Course Details</h2>
-                        <div class="program-details">
-                            <p><strong>Start Date:</strong> 17th April 2023</p>
-                            <p><strong>End Date:</strong> 19th June 2023</p>
-                            <p><strong>Sessions:</strong> 10 sessions</p>
-                            <p><strong>Session Duration:</strong> 2 Hours</p>
-                            <p><strong>Schedule:</strong> Mondays 17:00-19:00</p>
-                            <p><strong>Age Requirement:</strong> 10-15 years</p>
-                            <p><strong>Price:</strong> €200</p>
-                        </div>
-                    </div>
-
-                    <div class="camp-box camp-section">
                         <h2>Learning Outcomes</h2>
                         <p>By the end of the course, students will:</p>
                         <ul>
@@ -94,6 +79,7 @@ include '../components/header.php';
                             <li>Share completed music projects with peers and family</li>
                         </ul>
                     </div>
+                    <p><a href="mailto:spiterik@gmail.com">Email us at spiterik@gmail.com</a></p>
                 </div>
             </div>
         </section>

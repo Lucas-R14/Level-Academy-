@@ -24,9 +24,7 @@ include '../components/header.php';
         <section class="tournaments-section">
             <div class="tournament-item">
                 <div class="tournament-content-wrap">
-                    <div class="camp-buttons">
-                        <a href="https://forms.gle/qwbBBKX8rqrx5rQ5A" target="_blank" class="register-btn">Book Now</a>
-                    </div>
+
 
                     <div class="camp-section">
                         <h2>Party Overview</h2>
@@ -84,10 +82,105 @@ include '../components/header.php';
                         <h2>Contact Us</h2>
                         <p>Ready to plan your perfect gaming birthday party? Contact us at info@levelacademy.com.mt to discuss your requirements and make a booking.</p>
                     </div>
+                    <div class="camp-box camp-section email-section">
+                        <div class="email-container">
+                            <div class="email-icon">
+                                <i class="fas fa-envelope-open-text"></i>
+                            </div>
+                            <div class="email-content">
+                                <h2>Ready to Plan Your Party?</h2>
+                                <p>Contact us today to book your gaming birthday party experience!</p>
+                                <div class="email-button">
+                                    <a href="mailto:spiterik@gmail.com" class="email-link">
+                                        <i class="fas fa-paper-plane"></i> Email Us at spiterik@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
+
+    <style>
+        .email-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .email-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .email-icon {
+            font-size: 3rem;
+            color: #6c5ce7;
+            margin-bottom: 10px;
+        }
+        
+        .email-content h2 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .email-content p {
+            color: #636e72;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .email-button {
+            margin-top: 15px;
+        }
+        
+        .email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #6c5ce7;
+            color: white !important;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .email-link:hover {
+            background: #5649c0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        
+        .email-link i {
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .email-section {
+                padding: 20px 15px;
+            }
+            
+            .email-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .email-link {
+                padding: 10px 20px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
 
 <?php
 // Including the footer
