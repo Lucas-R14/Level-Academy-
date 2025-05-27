@@ -1,9 +1,4 @@
 <aside class="sidebar">
-    <form class="sidebar-search">
-        <input type="text" placeholder="type to search...">
-        <button type="submit"><i class="fas fa-search"></i></button>
-    </form>
-
     <div class="sidebar-section">
         <h3 class="sidebar-title">Recent Posts</h3>
         <ul class="sidebar-list">
@@ -31,13 +26,5 @@
             <li><a href="#">News</a></li>
             <li><a href="#">Uncategorized</a></li>
         </ul>
-    </div>
-
-    <div class="sidebar-section">
-        <h3 class="sidebar-title">Search</h3>
-        <form class="sidebar-search">
-            <input type="text" placeholder="type to search...">
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </form>
     </div>
 </aside> 
