@@ -29,8 +29,10 @@
             <a href="#contact">Contact</a>
           </div>
         </div>
+        <a href="tournamentslist.php">Tournaments</a>
+        <a href="articleslist.php">Articles</a>
         <div class="dropdown">
-          <a href="tournamentslist.php" class="dropbtn">Tournaments</a>
+          <a href="insideout.php" class="dropbtn">Inside Out</a>
           <div class="dropdown-content tournament-dropdown">
             <a href="tournamentslist.php">All Tournaments</a>
             <a href="summercamp.php">Inside / Out Summer Camp</a>
@@ -42,8 +44,6 @@
             <a href="contentcreation.php">Content Creation</a>
           </div>
         </div>
-        <a href="articleslist.php">Articles</a>
-        <a href="insideout.php">Inside Out</a>
       </div>
     </nav>
   </div>
