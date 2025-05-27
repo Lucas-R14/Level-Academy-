@@ -19,7 +19,7 @@ include '../components/header.php';
     <h1 class="insideout-title">Inside Out Summer Camp 2025</h1>
     <div class="insideout-hero-content">
         <div class="insideout-hero-img">
-            <img src="public\assets\images\insideout\Inside-out.png" alt="Inside Out Summer Camp 2025">
+            <img src="../../public\assets\images\insideout\Inside-out.png" alt="Inside Out Summer Camp 2025">
         </div>
         <div class="insideout-hero-text">
             <div class="about-title">about</div>
