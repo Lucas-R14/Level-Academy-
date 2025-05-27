@@ -12,6 +12,7 @@ include '../components/header.php';
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../public/assets/style.css">
     <link rel="stylesheet" href="../../public/assets/css/tournamentslist.css">
+    <link rel="stylesheet" href="../../public/assets/css/email-section.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
@@ -103,85 +104,6 @@ include '../components/header.php';
             </div>
         </section>
     </div>
-
-    <style>
-        .email-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 30px;
-            margin-top: 30px;
-            text-align: center;
-        }
-        
-        .email-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .email-icon {
-            font-size: 3rem;
-            color: #6c5ce7;
-            margin-bottom: 10px;
-        }
-        
-        .email-content h2 {
-            color: #2d3436;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-        
-        .email-content p {
-            color: #636e72;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-        
-        .email-button {
-            margin-top: 15px;
-        }
-        
-        .email-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #6c5ce7;
-            color: white !important;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
-        }
-        
-        .email-link:hover {
-            background: #5649c0;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
-        }
-        
-        .email-link i {
-            font-size: 1.1em;
-        }
-        
-        @media (max-width: 768px) {
-            .email-section {
-                padding: 20px 15px;
-            }
-            
-            .email-content h2 {
-                font-size: 1.5rem;
-            }
-            
-            .email-link {
-                padding: 10px 20px;
-                font-size: 0.95rem;
-            }
-        }
-    </style>
 
 <?php
 // Including the footer

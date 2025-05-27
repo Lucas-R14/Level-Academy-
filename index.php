@@ -7,29 +7,7 @@
     <meta http-equiv="refresh" content="0; URL=src/pages/home.php">
     <link rel="stylesheet" href="public/assets/style.css">
     <link rel="stylesheet" href="public/assets/page-transition.css">
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        a {
-            color: #0066cc;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="public/assets/css/redirect.css">
 </head>
 <body>
     <!-- Page Transition Element -->
