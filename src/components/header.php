@@ -31,19 +31,7 @@
         </div>
         <a href="tournamentslist.php">Tournaments</a>
         <a href="articleslist.php">Articles</a>
-        <div class="dropdown">
-          <a href="insideout.php" class="dropbtn">Inside Out</a>
-          <div class="dropdown-content tournament-dropdown">
-            <a href="tournamentslist.php">All Tournaments</a>
-            <a href="summercamp.php">Inside / Out Summer Camp</a>
-            <a href="photography.php">Photography for Kids</a>
-            <a href="birthday.php">Birthday Parties</a>
-            <a href="music.php">Music Production for Kids</a>
-            <a href="game.php">Game Creation</a>
-            <a href="sounddesignforgames.php">Sound Design for Games</a>
-            <a href="contentcreation.php">Content Creation</a>
-          </div>
-        </div>
+        <a href="insideout.php">Inside Out</a>
       </div>
     </nav>
   </div>
