@@ -21,7 +21,7 @@ include '../components/header.php';
 
   <section id="home" class="hero">
     <div class="hero-content">
-      <h1>Inside Out Summer Camp 2025</h1>
+      <h1>Inside Out Summer Camp</h1>
       <p>Level Academy – Malta's first eSports academy. Specialized coaching sessions and professional-level training, transforming your passion into a career.</p>
       <a href="#courses" class="btn">Explore Courses</a>
     </div>
