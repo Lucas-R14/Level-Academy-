@@ -16,7 +16,7 @@ include '../components/header.php';
 ?>
 
 <div class="insideout-hero">
-    <h1 class="insideout-title">Inside Out Summer Camp 2025</h1>
+    <h1 class="insideout-title">Inside Out Summer Camp</h1>
     <div class="insideout-hero-content">
         <div class="insideout-hero-img">
             <img src="../../public\assets\images\insideout\Inside-out.png" alt="Inside Out Summer Camp 2025">
@@ -25,7 +25,7 @@ include '../components/header.php';
             <div class="about-title">about</div>
             <p>Our camp is meticulously designed by professionals across the educational spectrum, ensuring a robust and enriching learning experience. With state-of-the-art equipment and small class sizes, we provide a hands-on, explorative environment where every camper gets personalized attention. This unique setup helps nurture not only tech skills but also life skills, using gaming as a tool for real-world applications.</p>
             <p>The Inside/Out Summer Camp, organized by Level Academy, offers an exciting, immersive experience for gaming enthusiasts aged 6+. Spanning eight weeks, this comprehensive summer camp combines Esports Athlete Training, Game Creation, Outdoor Physical Activities, Content Creation, and Professional Coaching to provide a unique and enriching experience for participants.</p>
-            <p>See bellow for the pricing and course guide and the links for registration as well as the esports summer camp 2025 brochure.</p>
+            <p>See bellow for the pricing and course guide and the links for registration as well as the esports summer camp brochure.</p>
         </div>
     </div>
 </div>
